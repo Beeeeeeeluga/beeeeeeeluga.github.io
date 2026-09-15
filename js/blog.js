@@ -277,14 +277,10 @@ function renderMarkdown(markdown) {
 
     }
 
-
-    return marked.parse(
-        markdown,
-        {
-            breaks: true,
-            gfm: true
-        }
-    );
+    return marked.parse(markdown, {
+        gfm: true,
+        breaks: true
+    });
 }
 
 
