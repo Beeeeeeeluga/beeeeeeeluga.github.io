@@ -63,7 +63,11 @@ const translations = {
             title: "關於我",
 
             description:
-                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Discord 相關工具與各種自己感興趣的專案。",
+                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Discord 相關工具與各種自己感興趣的專案。\n" +
+                "我平常在 Windows 11 上寫程式，並透過 Git push 將成果部署到虛擬機。\n\n" +
+                "目前我擁有三台虛擬機：一台是 Oracle VM 4C24GB 永久免費方案（新加坡機房、ARM64、Ubuntu 22.04），用來架設 Nginx 網頁伺服器（搭配 Cloudflare）、Discord 機器人（discord.py）、搜尋引擎、Wiki.js 與 Artalk 留言系統；\n" +
+                "一台是 Oracle VM E2 micro 永久免費方案（新加坡機房、x86、Ubuntu 22.04），用來測試 BedrockBridge 外掛；\n" +
+                "另一台是 OVHCloud VM（AMD Ryzen 7 7700 8-Core、16GB RAM、香港機房、Ubuntu 22.04），用來運行一個約 850 人的公開社群專案。\n",
 
             description2:
                 "我喜歡從實際的問題出發，慢慢研究技術並將它實作出來。"
@@ -232,7 +236,14 @@ const translations = {
             title: "About Me",
 
             description:
-                "I'm a coding student interested in programming and web technologies. I enjoy building websites, Discord tools and various projects.",
+                "I’m a student who loves exploring programming and web technologies.\n" +
+                "I build websites, Minecraft and Discord-related tools, and various projects that I’m personally interested in.\n\n" +
+                "I usually write code on Windows 11 and deploy it to my virtual machines via Git push.\n" +
+                "I currently run three VMs: an Oracle VM 4C24GB Always Free instance (Singapore, ARM64, Ubuntu 22.04) that hosts an Nginx web server (with Cloudflare), a Discord bot (discord.py), a search engine, Wiki.js, and the Artalk comment system;\n" +
+                "an Oracle VM E2 micro Always Free instance (Singapore, x86, Ubuntu 22.04) used for testing BedrockBridge plugins;\n" +
+                "and an OVHCloud VM (AMD Ryzen 7 7700 8-Core, 16GB RAM, Hong Kong, Ubuntu 22.04) that runs a public community project with around 850 members.\n\n" +
+                "This experience has helped me become more familiar with Linux and server operations.\n" +
+                "I can handle basic Ubuntu/Linux CLI commands, know a little Python, and work with JavaScript, CSS, HTML, and PHP. My main interest is frontend development.\n",
 
             description2:
                 "I like starting from real-world problems, learning how things work and turning ideas into working projects."
