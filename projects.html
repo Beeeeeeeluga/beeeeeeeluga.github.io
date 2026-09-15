@@ -4,15 +4,23 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title data-i18n="pages.projects">
-        我的專案 · Jimmy
+        我的專案
     </title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
 </head>
+
 
 <body>
 
@@ -21,47 +29,68 @@
 
     <div class="nav-container">
 
-        <a href="index.html" class="logo">
+        <a
+            href="index.html"
+            class="logo"
+        >
             Jimmy
         </a>
 
-        <button class="menu-toggle" aria-label="Menu">
+
+        <button
+            class="menu-toggle"
+            aria-label="Menu"
+        >
             ☰
         </button>
 
+
         <nav class="nav-menu">
 
-            <a href="index.html"
-               data-i18n="nav.about">
+            <a
+                href="index.html"
+                data-i18n="nav.about"
+            >
                 關於我
             </a>
 
-            <a href="projects.html"
-               data-i18n="nav.projects">
+            <a
+                href="projects.html"
+                data-i18n="nav.projects"
+            >
                 我的專案
             </a>
 
-            <a href="links.html"
-               data-i18n="nav.links">
+            <a
+                href="links.html"
+                data-i18n="nav.links"
+            >
                 連結列表
             </a>
 
-            <a href="blog.html"
-               data-i18n="nav.blog">
+            <a
+                href="blog.html"
+                data-i18n="nav.blog"
+            >
                 我的部落格
             </a>
 
+
             <div class="language-switcher">
 
-                <button type="button"
-                        data-language="zh">
+                <button
+                    type="button"
+                    data-language="zh"
+                >
                     中
                 </button>
 
                 <span>|</span>
 
-                <button type="button"
-                        data-language="en">
+                <button
+                    type="button"
+                    data-language="en"
+                >
                     EN
                 </button>
 
@@ -74,155 +103,60 @@
 </header>
 
 
+
 <main>
 
-    <section class="page-header">
 
-        <p class="eyebrow">
-            PROJECTS
-        </p>
+<section class="page-header">
 
-        <h1 data-i18n="pages.projects">
-            我的專案
-        </h1>
-
-        <p data-i18n="pages.projectsDescription">
-            我正在製作或曾經製作的一些專案。
-        </p>
-
-    </section>
+    <p class="eyebrow">
+        PROJECTS
+    </p>
 
 
-    <section class="section">
-
-        <div class="project-list">
-
-
-            <!-- xhakyialk -->
-            <a href="https://xhakyialk.com/"
-               target="_blank"
-               rel="noopener"
-               class="large-project-card">
-
-                <div class="project-card-content">
-
-                    <p class="card-label">
-                        PROJECT 01
-                    </p>
-
-                    <h2 data-i18n="projects.xhakyialk.title">
-                        xhakyialk
-                    </h2>
-
-                    <p data-i18n="projects.xhakyialk.longDescription">
-                        Minecraft 社群網站，提供伺服器資訊、社群內容以及各種 Minecraft 相關服務。
-                    </p>
-
-                </div>
-
-                <span class="card-arrow">
-                    ↗
-                </span>
-
-            </a>
+    <h1 data-i18n="pages.projects">
+        我的專案
+    </h1>
 
 
-            <!-- Web Map -->
-            <div class="large-project-card">
+    <p data-i18n="pages.projectsDescription">
+        我正在製作或曾經製作的一些專案。
+    </p>
 
-                <div class="project-card-content">
-
-                    <p class="card-label">
-                        PROJECT 02
-                    </p>
-
-                    <h2 data-i18n="projects.minecraftMap.title">
-                        Minecraft Web Map
-                    </h2>
-
-                    <p data-i18n="projects.minecraftMap.longDescription">
-                        使用 uNmINeD 將 Minecraft 世界轉換成可以透過瀏覽器查看的互動式地圖。
-                    </p>
-
-                </div>
-
-                <span class="card-arrow">
-                    →
-                </span>
-
-            </div>
+</section>
 
 
-            <!-- BedrockBridge -->
-            <div class="large-project-card">
 
-                <div class="project-card-content">
+<section class="section">
 
-                    <p class="card-label">
-                        PROJECT 03
-                    </p>
+    <div
+        class="project-list"
+        id="projects-container"
+    >
+    </div>
 
-                    <h2 data-i18n="projects.bridge.title">
-                        BedrockBridge Plugins
-                    </h2>
+</section>
 
-                    <p data-i18n="projects.bridge.longDescription">
-                        為 Minecraft Bedrock Edition 開發的 JavaScript 插件。
-                    </p>
-
-                </div>
-
-                <span class="card-arrow">
-                    →
-                </span>
-
-            </div>
-
-
-            <!-- Personal Website -->
-            <div class="large-project-card">
-
-                <div class="project-card-content">
-
-                    <p class="card-label">
-                        PROJECT 04
-                    </p>
-
-                    <h2 data-i18n="projects.website.title">
-                        Personal Website
-                    </h2>
-
-                    <p data-i18n="projects.website.description">
-                        使用 HTML、CSS 與 JavaScript 建立的個人網站。
-                    </p>
-
-                </div>
-
-                <span class="card-arrow">
-                    →
-                </span>
-
-            </div>
-
-
-        </div>
-
-    </section>
 
 </main>
+
 
 
 <footer class="footer">
 
     <p>
-        © <span id="current-year"></span> Jimmy
+        ©
+        <span id="current-year"></span>
+        Jimmy
     </p>
 
 </footer>
 
 
+
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
+
 
 </body>
 
