@@ -338,10 +338,6 @@ button {
 
 }
 
-.description {
-    white-space: pre-line;
-}
-
 
 
 .hero-buttons {
@@ -471,6 +467,8 @@ button {
 
     max-width: 760px;
 
+    white-space: pre-line;
+
 }
 
 
@@ -481,6 +479,8 @@ button {
     font-size: 17px;
 
     margin-bottom: 20px;
+
+    white-space: pre-line;
 
 }
 
