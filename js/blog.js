@@ -33,7 +33,7 @@ function escapeHtml(value) {
 // Get localized title
 // ==========================================================
 
-function getLocalizedValue(data, language) {
+function getBlogLocalizedValue(data, language) {
 
     if (!data) {
         return "";
@@ -347,7 +347,7 @@ async function loadBlogList() {
                 .map(post => {
 
                     const title =
-                        getLocalizedValue(
+                        getBlogLocalizedValue(
                             post,
                             language
                         );
