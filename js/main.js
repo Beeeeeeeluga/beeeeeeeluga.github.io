@@ -358,6 +358,12 @@ function createLinkCard(link) {
         localized(link.description);
 
 
+    const iconHtml =
+        link.icon
+            ? `<img src="${escapeHtml(link.icon)}" alt="${escapeHtml(localized(link.title))}" class="link-card-icon" />`
+            : "";
+
+
     return `
         <a
             href="${escapeHtml(link.url)}"
@@ -365,6 +371,8 @@ function createLinkCard(link) {
             target="_blank"
             rel="noopener"
         >
+
+            ${iconHtml}
 
             <div>
 
