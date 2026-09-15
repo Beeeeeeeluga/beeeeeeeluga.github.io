@@ -30,7 +30,7 @@ function escapeHtml(value) {
 
 
 // ==========================================================
-// Get localized value
+// Get localized title
 // ==========================================================
 
 function getLocalizedValue(data, language) {
@@ -56,6 +56,10 @@ function getLocalizedValue(data, language) {
     );
 }
 
+
+// ==========================================================
+// Get localized description
+// ==========================================================
 
 function getLocalizedDescription(data, language) {
 
@@ -146,21 +150,26 @@ function parseFrontMatter(markdown) {
         content: markdown
     };
 
+
     if (!markdown.startsWith("---")) {
         return result;
     }
 
+
     const endIndex =
         markdown.indexOf("\n---", 3);
+
 
     if (endIndex === -1) {
         return result;
     }
 
+
     const frontMatter =
         markdown
             .substring(3, endIndex)
             .trim();
+
 
     const content =
         markdown
@@ -175,14 +184,17 @@ function parseFrontMatter(markdown) {
             const separator =
                 line.indexOf(":");
 
+
             if (separator === -1) {
                 return;
             }
+
 
             const key =
                 line
                     .substring(0, separator)
                     .trim();
+
 
             let value =
                 line
@@ -193,6 +205,7 @@ function parseFrontMatter(markdown) {
             if (
                 (value.startsWith('"') &&
                     value.endsWith('"')) ||
+
                 (value.startsWith("'") &&
                     value.endsWith("'"))
             ) {
@@ -204,6 +217,7 @@ function parseFrontMatter(markdown) {
                     );
 
             }
+
 
             result.data[key] = value;
 
@@ -226,12 +240,15 @@ function formatDate(dateString) {
         return "";
     }
 
+
     const date =
         new Date(dateString);
+
 
     if (Number.isNaN(date.getTime())) {
         return dateString;
     }
+
 
     return date.toLocaleDateString(
         getBlogLanguage() === "en"
@@ -260,6 +277,7 @@ function renderMarkdown(markdown) {
 
     }
 
+
     return marked.parse(
         markdown,
         {
@@ -281,6 +299,7 @@ async function loadBlogList() {
             "blog-container"
         );
 
+
     if (!container) {
         return;
     }
@@ -297,6 +316,7 @@ async function loadBlogList() {
 
         const posts =
             await getBlogPosts();
+
 
         const language =
             getBlogLanguage();
@@ -413,7 +433,7 @@ async function loadBlogList() {
                     </summary>
 
                     <pre>
-                        ${escapeHtml(error.message)}
+${escapeHtml(error.message)}
                     </pre>
 
                 </details>
@@ -435,6 +455,7 @@ async function loadBlogPost(filename) {
         document.getElementById(
             "blog-container"
         );
+
 
     if (!container) {
         return;
@@ -525,7 +546,9 @@ async function loadBlogPost(filename) {
 
 
                 <div class="blog-post-content">
+
                     ${html}
+
                 </div>
 
             </article>
@@ -564,7 +587,7 @@ async function loadBlogPost(filename) {
                     </summary>
 
                     <pre>
-                        ${escapeHtml(error.message)}
+${escapeHtml(error.message)}
                     </pre>
 
                 </details>
