@@ -52,6 +52,24 @@
             "label": "DISCORD",
 
             "url": "https://discord.gg/hQNy8F6HQ4"
+        },
+
+        {
+            "id": "discord-xhakyialk",
+
+            "title": {
+                "zh": "我的麥塊基岩版Discord伺服器（xhakyialk元宇宙專案的分流一）",
+                "en": "My Minecraft Server- Xhakyialk Zone"
+            },
+
+            "description": {
+                "zh": "我的 Discord 第三社群 - Xhakyialk Zone。（800+人）",
+                "en": "Xhakyialk Zone Discord."
+            },
+
+            "label": "DISCORD",
+
+            "url": "https://discord.gg/kB7dWtQZKx"
         }
     ]
 }
