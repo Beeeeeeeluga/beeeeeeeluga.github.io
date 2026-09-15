@@ -38,7 +38,20 @@ jobs:
       # ==========================================
 
       - name: Generate Blog HTML
-        run: python3 scripts/generate-blog.py
+        run: |
+          echo "=== Check files ==="
+          pwd
+          ls -la
+          echo "=== scripts ==="
+          ls -la scripts
+          echo "=== blog ==="
+          ls -la blog
+      
+          echo "=== Generate ==="
+          python3 scripts/generate-blog.py
+      
+          echo "=== Generated HTML ==="
+          find blog -maxdepth 1 -type f -name "*.html" -print
 
 
       # ==========================================
