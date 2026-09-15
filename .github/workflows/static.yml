@@ -64,6 +64,20 @@ jobs:
           echo "===== HTML HEAD ====="
           head -40 blog/test.html
 
+      - name: Show deployment files
+        run: |
+          echo "===== ALL HTML FILES ====="
+          find . -type f -name "*.html" -print
+      
+          echo "===== TEST HTML SIZE ====="
+          wc -c blog/test.html
+      
+          echo "===== ROOT ====="
+          ls -la
+      
+          echo "===== BLOG ====="
+          ls -la blog
+
 
       # ==========================================
       # GitHub Pages
