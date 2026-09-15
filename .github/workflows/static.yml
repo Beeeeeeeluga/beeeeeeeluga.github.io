@@ -51,14 +51,7 @@ jobs:
           echo "===== GENERATED HTML ====="
           find blog -maxdepth 1 -type f -name "*.html" -print
 
-
-      # ==========================================
-      # GitHub Pages
-      # ==========================================
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
+      
       - name: Verify generated files
         run: |
           echo "===== BLOG FILES ====="
@@ -70,6 +63,15 @@ jobs:
       
           echo "===== HTML HEAD ====="
           head -40 blog/test.html
+
+
+      # ==========================================
+      # GitHub Pages
+      # ==========================================
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
 
 
       - name: Upload artifact
