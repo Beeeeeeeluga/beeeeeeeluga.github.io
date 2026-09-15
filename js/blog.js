@@ -1,14 +1,9 @@
 // ==========================================================
 // Blog Loader
-// GitHub Repository Markdown Blog
+// Markdown + GitHub Actions generated index
 // ==========================================================
 
-const GITHUB_OWNER = "beeeeeeeluga";
-const GITHUB_REPOSITORY = "beeeeeeeluga.github.io";
-const BLOG_DIRECTORY = "blog";
-
-const GITHUB_API_URL =
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/contents/${BLOG_DIRECTORY}`;
+const BLOG_INDEX_URL = "blog/posts.json";
 
 
 // ==========================================================
@@ -17,27 +12,6 @@ const GITHUB_API_URL =
 
 function getBlogLanguage() {
     return localStorage.getItem("Jimmy-language") || "zh";
-}
-
-
-function getLocalizedValue(value, language) {
-    if (!value) {
-        return "";
-    }
-
-    if (typeof value === "string") {
-        return value;
-    }
-
-    if (Array.isArray(value)) {
-        return value;
-    }
-
-    if (typeof value === "object") {
-        return value[language] || value.zh || value.en || "";
-    }
-
-    return "";
 }
 
 
@@ -56,22 +30,101 @@ function escapeHtml(value) {
 
 
 // ==========================================================
+// Get localized value
+// ==========================================================
+
+function getLocalizedValue(data, language) {
+
+    if (!data) {
+        return "";
+    }
+
+    if (language === "en") {
+
+        return (
+            data.title_en ||
+            data.title_zh ||
+            ""
+        );
+
+    }
+
+    return (
+        data.title_zh ||
+        data.title_en ||
+        ""
+    );
+}
+
+
+function getLocalizedDescription(data, language) {
+
+    if (!data) {
+        return "";
+    }
+
+    if (language === "en") {
+
+        return (
+            data.description_en ||
+            data.description_zh ||
+            ""
+        );
+
+    }
+
+    return (
+        data.description_zh ||
+        data.description_en ||
+        ""
+    );
+}
+
+
+// ==========================================================
+// Load blog index
+// ==========================================================
+
+async function getBlogPosts() {
+
+    const response = await fetch(
+        `${BLOG_INDEX_URL}?t=${Date.now()}`
+    );
+
+    if (!response.ok) {
+
+        throw new Error(
+            `Unable to load blog index: HTTP ${response.status}`
+        );
+
+    }
+
+    const posts = await response.json();
+
+    if (!Array.isArray(posts)) {
+        throw new Error("Blog index format is invalid.");
+    }
+
+    return posts;
+}
+
+
+// ==========================================================
 // Load Markdown
 // ==========================================================
 
 async function loadMarkdown(filename) {
 
-    const url =
-        `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/main/${BLOG_DIRECTORY}/${encodeURIComponent(filename)}`;
-
-    console.log("[Blog] Loading Markdown:", url);
-
-    const response = await fetch(url);
+    const response = await fetch(
+        `blog/${encodeURIComponent(filename)}?t=${Date.now()}`
+    );
 
     if (!response.ok) {
+
         throw new Error(
-            `Markdown loading failed: HTTP ${response.status} ${response.statusText}`
+            `Unable to load Markdown: HTTP ${response.status}`
         );
+
     }
 
     return await response.text();
@@ -107,32 +160,39 @@ function parseFrontMatter(markdown) {
         .substring(endIndex + 4)
         .trim();
 
-    frontMatter.split("\n").forEach(line => {
+    frontMatter
+        .split("\n")
+        .forEach(line => {
 
-        const separator = line.indexOf(":");
+            const separator = line.indexOf(":");
 
-        if (separator === -1) {
-            return;
-        }
+            if (separator === -1) {
+                return;
+            }
 
-        const key = line
-            .substring(0, separator)
-            .trim();
+            const key = line
+                .substring(0, separator)
+                .trim();
 
-        let value = line
-            .substring(separator + 1)
-            .trim();
+            let value = line
+                .substring(separator + 1)
+                .trim();
 
-        // Remove quotation marks
-        if (
-            (value.startsWith('"') && value.endsWith('"')) ||
-            (value.startsWith("'") && value.endsWith("'"))
-        ) {
-            value = value.substring(1, value.length - 1);
-        }
+            if (
+                (value.startsWith('"') && value.endsWith('"')) ||
+                (value.startsWith("'") && value.endsWith("'"))
+            ) {
 
-        result.data[key] = value;
-    });
+                value = value.substring(
+                    1,
+                    value.length - 1
+                );
+
+            }
+
+            result.data[key] = value;
+
+        });
 
     result.content = content;
 
@@ -141,57 +201,8 @@ function parseFrontMatter(markdown) {
 
 
 // ==========================================================
-// Blog metadata
+// Date
 // ==========================================================
-
-function getPostTitle(data) {
-
-    const language = getBlogLanguage();
-
-    if (language === "en") {
-        return (
-            data.title_en ||
-            data.title_zh ||
-            data.title ||
-            "Untitled"
-        );
-    }
-
-    return (
-        data.title_zh ||
-        data.title_en ||
-        data.title ||
-        "未命名文章"
-    );
-}
-
-
-function getPostDescription(data) {
-
-    const language = getBlogLanguage();
-
-    if (language === "en") {
-        return (
-            data.description_en ||
-            data.description_zh ||
-            data.description ||
-            ""
-        );
-    }
-
-    return (
-        data.description_zh ||
-        data.description_en ||
-        data.description ||
-        ""
-    );
-}
-
-
-function getPostDate(data) {
-    return data.date || "";
-}
-
 
 function formatDate(dateString) {
 
@@ -206,7 +217,9 @@ function formatDate(dateString) {
     }
 
     return date.toLocaleDateString(
-        getBlogLanguage() === "en" ? "en-US" : "zh-TW",
+        getBlogLanguage() === "en"
+            ? "en-US"
+            : "zh-TW",
         {
             year: "numeric",
             month: "long",
@@ -217,77 +230,37 @@ function formatDate(dateString) {
 
 
 // ==========================================================
-// Get blog files from GitHub
-// ==========================================================
-
-async function getBlogFiles() {
-
-    console.log("[Blog] GitHub API:", GITHUB_API_URL);
-
-    const response = await fetch(GITHUB_API_URL, {
-        headers: {
-            "Accept": "application/vnd.github+json"
-        }
-    });
-
-    if (!response.ok) {
-
-        let message = "";
-
-        try {
-            const errorData = await response.json();
-            message = errorData.message || "";
-        } catch (_) {
-            // Ignore JSON parse error
-        }
-
-        throw new Error(
-            `GitHub API failed: HTTP ${response.status} ${response.statusText}` +
-            (message ? ` - ${message}` : "")
-        );
-    }
-
-    const files = await response.json();
-
-    if (!Array.isArray(files)) {
-        throw new Error("GitHub API did not return a directory listing.");
-    }
-
-    return files
-        .filter(file =>
-            file.type === "file" &&
-            file.name.toLowerCase().endsWith(".md")
-        )
-        .map(file => file.name);
-}
-
-
-// ==========================================================
 // Render Markdown
 // ==========================================================
 
 function renderMarkdown(markdown) {
 
     if (typeof marked === "undefined") {
+
         throw new Error(
-            "Marked.js is not loaded. Check the marked CDN script in blog.html."
+            "Marked.js is not loaded."
         );
+
     }
 
-    return marked.parse(markdown, {
-        breaks: true,
-        gfm: true
-    });
+    return marked.parse(
+        markdown,
+        {
+            breaks: true,
+            gfm: true
+        }
+    );
 }
 
 
 // ==========================================================
-// Blog list
+// Blog List
 // ==========================================================
 
 async function loadBlogList() {
 
-    const container = document.getElementById("blog-container");
+    const container =
+        document.getElementById("blog-container");
 
     if (!container) {
         return;
@@ -301,112 +274,111 @@ async function loadBlogList() {
 
     try {
 
-        const files = await getBlogFiles();
+        const posts = await getBlogPosts();
 
-        console.log("[Blog] Markdown files:", files);
+        const language =
+            getBlogLanguage();
 
-        if (files.length === 0) {
+        if (posts.length === 0) {
 
             container.innerHTML = `
                 <div class="blog-empty">
-                    <p>目前還沒有部落格文章。</p>
+                    <p>
+                        ${
+                            language === "en"
+                                ? "There are no blog posts yet."
+                                : "目前還沒有部落格文章。"
+                        }
+                    </p>
                 </div>
             `;
 
             return;
         }
 
-        const posts = [];
 
-        for (const filename of files) {
+        container.innerHTML = posts
+            .map(post => {
 
-            try {
+                const title =
+                    getLocalizedValue(
+                        post,
+                        language
+                    );
 
-                const markdown = await loadMarkdown(filename);
-                const parsed = parseFrontMatter(markdown);
+                const description =
+                    getLocalizedDescription(
+                        post,
+                        language
+                    );
 
-                posts.push({
-                    filename,
-                    data: parsed.data,
-                    content: parsed.content
-                });
-
-            } catch (error) {
-
-                console.error(
-                    `[Blog] Failed to load ${filename}:`,
-                    error
-                );
-
-            }
-        }
-
-        posts.sort((a, b) => {
-
-            const dateA = new Date(a.data.date || 0);
-            const dateB = new Date(b.data.date || 0);
-
-            return dateB - dateA;
-        });
+                const date =
+                    formatDate(post.date);
 
 
-        container.innerHTML = posts.map(post => {
+                return `
+                    <a
+                        class="blog-card"
+                        href="blog.html?post=${encodeURIComponent(post.filename)}"
+                    >
 
-            const title = escapeHtml(
-                getPostTitle(post.data)
-            );
+                        <div class="blog-card-content">
 
-            const description = escapeHtml(
-                getPostDescription(post.data)
-            );
+                            ${
+                                date
+                                    ? `
+                                        <div class="blog-card-date">
+                                            ${escapeHtml(date)}
+                                        </div>
+                                      `
+                                    : ""
+                            }
 
-            const date = escapeHtml(
-                formatDate(getPostDate(post.data))
-            );
+                            <h2>
+                                ${escapeHtml(title)}
+                            </h2>
 
-            return `
-                <a
-                    class="blog-card"
-                    href="blog.html?post=${encodeURIComponent(post.filename)}"
-                >
-                    <div class="blog-card-content">
+                            ${
+                                description
+                                    ? `
+                                        <p>
+                                            ${escapeHtml(description)}
+                                        </p>
+                                      `
+                                    : ""
+                            }
 
-                        <div class="blog-card-date">
-                            ${date}
                         </div>
 
-                        <h2>
-                            ${title}
-                        </h2>
+                    </a>
+                `;
 
-                        ${
-                            description
-                                ? `<p>${description}</p>`
-                                : ""
-                        }
-
-                    </div>
-                </a>
-            `;
-
-        }).join("");
+            })
+            .join("");
 
 
     } catch (error) {
 
-        console.error("[Blog] Unable to load blog:", error);
+        console.error(
+            "[Blog] Unable to load blog:",
+            error
+        );
 
         container.innerHTML = `
             <div class="blog-error">
 
-                <h2>Unable to load blog</h2>
+                <h2>
+                    Unable to load blog
+                </h2>
 
                 <p>
                     Please try again later.
                 </p>
 
                 <details>
-                    <summary>Technical details</summary>
+                    <summary>
+                        Technical details
+                    </summary>
 
                     <pre>${escapeHtml(error.message)}</pre>
 
@@ -414,17 +386,19 @@ async function loadBlogList() {
 
             </div>
         `;
+
     }
 }
 
 
 // ==========================================================
-// Single blog post
+// Single Blog Post
 // ==========================================================
 
 async function loadBlogPost(filename) {
 
-    const container = document.getElementById("blog-container");
+    const container =
+        document.getElementById("blog-container");
 
     if (!container) {
         return;
@@ -438,25 +412,62 @@ async function loadBlogPost(filename) {
 
     try {
 
-        const markdown = await loadMarkdown(filename);
+        const markdown =
+            await loadMarkdown(filename);
 
-        const parsed = parseFrontMatter(markdown);
+        const parsed =
+            parseFrontMatter(markdown);
 
-        const title = getPostTitle(parsed.data);
-        const date = formatDate(getPostDate(parsed.data));
+        const language =
+            getBlogLanguage();
 
-        const html = renderMarkdown(parsed.content);
 
-        document.title = `${title} - Jimmy`;
+        let title =
+            language === "en"
+                ? (
+                    parsed.data.title_en ||
+                    parsed.data.title_zh ||
+                    parsed.data.title ||
+                    "Untitled"
+                )
+                : (
+                    parsed.data.title_zh ||
+                    parsed.data.title_en ||
+                    parsed.data.title ||
+                    "未命名文章"
+                );
+
+
+        const date =
+            formatDate(
+                parsed.data.date
+            );
+
+
+        const html =
+            renderMarkdown(
+                parsed.content
+            );
+
+
+        document.title =
+            `${title} - Jimmy`;
+
 
         container.innerHTML = `
             <article class="blog-post">
 
                 <header class="blog-post-header">
 
-                    <div class="blog-post-date">
-                        ${escapeHtml(date)}
-                    </div>
+                    ${
+                        date
+                            ? `
+                                <div class="blog-post-date">
+                                    ${escapeHtml(date)}
+                                </div>
+                              `
+                            : ""
+                    }
 
                     <h1>
                         ${escapeHtml(title)}
@@ -471,10 +482,12 @@ async function loadBlogPost(filename) {
             </article>
         `;
 
+
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });
+
 
     } catch (error) {
 
@@ -486,14 +499,18 @@ async function loadBlogPost(filename) {
         container.innerHTML = `
             <div class="blog-error">
 
-                <h2>Unable to load article</h2>
+                <h2>
+                    Unable to load article
+                </h2>
 
                 <p>
                     Please try again later.
                 </p>
 
                 <details>
-                    <summary>Technical details</summary>
+                    <summary>
+                        Technical details
+                    </summary>
 
                     <pre>${escapeHtml(error.message)}</pre>
 
@@ -501,26 +518,33 @@ async function loadBlogPost(filename) {
 
             </div>
         `;
+
     }
 }
 
 
 // ==========================================================
-// Language change
+// Reload
 // ==========================================================
 
 function reloadBlog() {
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    const post = params.get("post");
+    const post =
+        params.get("post");
 
     if (post) {
+
         loadBlogPost(post);
+
     } else {
+
         loadBlogList();
+
     }
 }
 
@@ -529,33 +553,51 @@ function reloadBlog() {
 // Initialize
 // ==========================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    const params = new URLSearchParams(
-        window.location.search
-    );
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
 
-    const post = params.get("post");
-
-    if (post) {
-        loadBlogPost(post);
-    } else {
-        loadBlogList();
-    }
+        const post =
+            params.get("post");
 
 
-    document
-        .querySelectorAll("[data-language]")
-        .forEach(button => {
+        if (post) {
 
-            button.addEventListener("click", () => {
+            loadBlogPost(post);
 
-                setTimeout(() => {
-                    reloadBlog();
-                }, 100);
+        } else {
+
+            loadBlogList();
+
+        }
+
+
+        document
+            .querySelectorAll(
+                "[data-language]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        setTimeout(
+                            () => {
+                                reloadBlog();
+                            },
+                            100
+                        );
+
+                    }
+                );
 
             });
 
-        });
-
-});
+    }
+);
