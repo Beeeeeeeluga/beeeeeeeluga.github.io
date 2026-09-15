@@ -1,0 +1,57 @@
+{
+    "links": [
+        {
+            "id": "github",
+
+            "title": {
+                "zh": "GitHub",
+                "en": "GitHub"
+            },
+
+            "description": {
+                "zh": "我的程式碼與開源專案。",
+                "en": "My code and open-source projects."
+            },
+
+            "label": "GITHUB",
+
+            "url": "https://github.com/"
+        },
+
+        {
+            "id": "xhakyialk",
+
+            "title": {
+                "zh": "xhakyialk",
+                "en": "xhakyialk"
+            },
+
+            "description": {
+                "zh": "Minecraft 社群網站。",
+                "en": "Minecraft community website."
+            },
+
+            "label": "WEBSITE",
+
+            "url": "https://xhakyialk.com/"
+        },
+
+        {
+            "id": "discord",
+
+            "title": {
+                "zh": "Discord",
+                "en": "Discord"
+            },
+
+            "description": {
+                "zh": "我的 Discord 社群。",
+                "en": "My Discord community."
+            },
+
+            "label": "DISCORD",
+
+            "url": "#"
+        }
+    ]
+}
