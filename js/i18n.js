@@ -1,7 +1,7 @@
 /*
 ==========================================================
 Jimmy Website
-i18n System
+i18n System - Version 3
 ==========================================================
 
 功能：
@@ -10,362 +10,18 @@ i18n System
 2. localStorage 記住語言
 3. 自動偵測瀏覽器語言
 4. 英文不存在時自動 fallback 到中文
-5. 支援 data-i18n
+5. 從 data/site.json 載入網站文字
+6. 支援 data-i18n
+7. 支援多段文字
 ==========================================================
 */
 
 
-const translations = {
+const I18N_DATA_URL = "data/site.json";
 
-    /*
-    ======================================================
-    中文
-    ======================================================
-    */
+let siteData = null;
 
-    zh: {
-
-        nav: {
-
-            about: "關於我",
-
-            projects: "我的專案",
-
-            links: "連結列表",
-
-            blog: "我的部落格"
-
-        },
-
-
-        home: {
-
-            eyebrow: "你好，我是",
-
-            role: "Developer · BSc Student",
-
-            description:
-                "喜歡研究程式設計、Web 開發與 Minecraft、Discord、node.js 相關技術。",
-
-            projects: "我的專案",
-
-            blog: "閱讀部落格",
-
-            featuredProjects: "精選專案",
-
-            viewAll: "查看全部 →"
-
-        },
-
-
-        about: {
-
-            title: "關於我",
-
-            description:
-                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Discord 相關工具與各種自己感興趣的專案。\n" +
-                "我平常在 Windows 11 上寫程式，並透過 Git push 將成果部署到虛擬機。\n\n" +
-                "目前我擁有三台虛擬機：一台是 Oracle VM 4C24GB 永久免費方案（新加坡機房、ARM64、Ubuntu 22.04），用來架設 Nginx 網頁伺服器（搭配 Cloudflare）、Discord 機器人（discord.py）、搜尋引擎、Wiki.js 與 Artalk 留言系統；\n" +
-                "一台是 Oracle VM E2 micro 永久免費方案（新加坡機房、x86、Ubuntu 22.04），用來測試 BedrockBridge 外掛；\n" +
-                "另一台是 OVHCloud VM（AMD Ryzen 7 7700 8-Core、16GB RAM、香港機房、Ubuntu 22.04），用來運行一個約 850 人的公開社群專案。\n",
-
-            description2:
-                "我喜歡從實際的問題出發，慢慢研究技術並將它實作出來。"
-
-        },
-
-
-        pages: {
-
-            projects: "我的專案",
-
-            projectsDescription:
-                "我正在製作或曾經製作的一些專案。",
-
-            links: "連結列表",
-
-            linksDescription:
-                "我的網站、社群與其他相關連結。",
-
-            blog: "我的部落格",
-
-            blogDescription:
-                "我的開發紀錄、技術筆記與一些想法。"
-
-        },
-
-
-        projects: {
-
-            xhakyialk: {
-
-                title: "xhakyialk",
-
-                description:
-                    "Minecraft 社群網站與相關服務。",
-
-                longDescription:
-                    "Minecraft 社群網站，提供伺服器資訊、社群內容以及各種 Minecraft 相關服務。"
-
-            },
-
-
-            minecraftMap: {
-
-                title: "Minecraft Web Map",
-
-                description:
-                    "使用 uNmINeD 建立 Minecraft 世界地圖。",
-
-                longDescription:
-                    "使用 uNmINeD 將 Minecraft 世界轉換成可以透過瀏覽器查看的互動式地圖。"
-
-            },
-
-
-            bridge: {
-
-                title: "BedrockBridge Plugins",
-
-                description:
-                    "Minecraft Bedrock Edition 的自訂插件開發。",
-
-                longDescription:
-                    "為 Minecraft Bedrock Edition 開發的 JavaScript 插件。"
-
-            },
-
-
-            website: {
-
-                title: "Personal Website",
-
-                description:
-                    "使用 HTML、CSS 與 JavaScript 建立的個人網站。"
-
-            }
-
-        },
-
-
-        links: {
-
-            github:
-                "我的程式碼與開源專案。",
-
-            xhakyialk:
-                "Minecraft 社群網站。",
-
-            discord:
-                "我的 Discord 社群。"
-
-        },
-
-
-        blog: {
-
-            post1: {
-
-                title:
-                    "建立我的 GitHub Pages",
-
-                description:
-                    "開始建立自己的個人網站，並研究 GitHub Pages 的使用方式。"
-
-            },
-
-
-            post2: {
-
-                title:
-                    "我的 Minecraft 開發紀錄",
-
-                description:
-                    "記錄 Minecraft 相關插件與工具的開發過程。"
-
-            }
-
-        }
-
-    },
-
-
-    /*
-    ======================================================
-    English
-    ======================================================
-    */
-
-    en: {
-
-        nav: {
-
-            about: "About Me",
-
-            projects: "Projects",
-
-            links: "Links",
-
-            blog: "Blog"
-
-        },
-
-
-        home: {
-
-            eyebrow: "HELLO, I'M",
-
-            role: "Developer · BSc Student",
-
-            description:
-                "I enjoy programming, web development and Minecraft, Discord-related technologies.",
-
-            projects: "My Projects",
-
-            blog: "Read My Blog",
-
-            featuredProjects: "Featured Projects",
-
-            viewAll: "View All →"
-
-        },
-
-
-        about: {
-
-            title: "About Me",
-
-            description:
-                "I’m a student who loves exploring programming and web technologies.\n" +
-                "I build websites, Minecraft and Discord-related tools, and various projects that I’m personally interested in.\n\n" +
-                "I usually write code on Windows 11 and deploy it to my virtual machines via Git push.\n" +
-                "I currently run three VMs: an Oracle VM 4C24GB Always Free instance (Singapore, ARM64, Ubuntu 22.04) that hosts an Nginx web server (with Cloudflare), a Discord bot (discord.py), a search engine, Wiki.js, and the Artalk comment system;\n" +
-                "an Oracle VM E2 micro Always Free instance (Singapore, x86, Ubuntu 22.04) used for testing BedrockBridge plugins;\n" +
-                "and an OVHCloud VM (AMD Ryzen 7 7700 8-Core, 16GB RAM, Hong Kong, Ubuntu 22.04) that runs a public community project with around 850 members.\n\n" +
-                "This experience has helped me become more familiar with Linux and server operations.\n" +
-                "I can handle basic Ubuntu/Linux CLI commands, know a little Python, and work with JavaScript, CSS, HTML, and PHP. My main interest is frontend development.\n",
-
-            description2:
-                "I like starting from real-world problems, learning how things work and turning ideas into working projects."
-
-        },
-
-
-        pages: {
-
-            projects: "Projects",
-
-            projectsDescription:
-                "Some of the projects I am working on or have worked on.",
-
-            links: "Links",
-
-            linksDescription:
-                "My websites, communities and other related links.",
-
-            blog: "Blog",
-
-            blogDescription:
-                "Development logs, technical notes and thoughts."
-
-        },
-
-
-        projects: {
-
-            xhakyialk: {
-
-                title: "xhakyialk",
-
-                description:
-                    "A Minecraft community website and related services.",
-
-                longDescription:
-                    "A Minecraft community website providing server information, community content and various Minecraft-related services."
-
-            },
-
-
-            minecraftMap: {
-
-                title: "Minecraft Web Map",
-
-                description:
-                    "A Minecraft world map generated with uNmINeD.",
-
-                longDescription:
-                    "An interactive web map that converts Minecraft worlds into maps that can be viewed directly in a browser."
-
-            },
-
-
-            bridge: {
-
-                title: "BedrockBridge Plugins",
-
-                description:
-                    "Custom plugin development for Minecraft Bedrock Edition.",
-
-                longDescription:
-                    "JavaScript plugins developed for Minecraft Bedrock Edition."
-
-            },
-
-
-            website: {
-
-                title: "Personal Website",
-
-                description:
-                    "A personal website built with HTML, CSS and JavaScript."
-
-            }
-
-        },
-
-
-        links: {
-
-            github:
-                "My code and open-source projects.",
-
-            xhakyialk:
-                "Minecraft community website.",
-
-            discord:
-                "My Discord community."
-
-        },
-
-
-        blog: {
-
-            post1: {
-
-                title:
-                    "Building My GitHub Pages",
-
-                description:
-                    "Starting my personal website and learning how to use GitHub Pages."
-
-            },
-
-
-            post2: {
-
-                title:
-                    "My Minecraft Development Log",
-
-                description:
-                    "Development notes about my Minecraft plugins and tools."
-
-            }
-
-        }
-
-    }
-
-};
+let currentLanguage = "zh";
 
 
 /*
@@ -374,7 +30,11 @@ const translations = {
 ==========================================================
 */
 
-function getTranslation(object, path) {
+function getValue(object, path) {
+
+    if (!object) {
+        return undefined;
+    }
 
     const parts = path.split(".");
 
@@ -398,7 +58,89 @@ function getTranslation(object, path) {
     }
 
     return value;
+}
 
+
+/*
+==========================================================
+Language fallback
+==========================================================
+
+優先：
+
+English
+ ↓
+沒有
+ ↓
+Chinese
+==========================================================
+*/
+
+function getLocalizedValue(value, language) {
+
+    if (
+        value === undefined ||
+        value === null
+    ) {
+
+        return undefined;
+
+    }
+
+
+    /*
+    如果本身就是普通文字
+    */
+
+    if (typeof value === "string") {
+
+        return value;
+
+    }
+
+
+    /*
+    如果是陣列
+    */
+
+    if (Array.isArray(value)) {
+
+        return value;
+
+    }
+
+
+    /*
+    嘗試目前語言
+    */
+
+    if (
+        value[language] !== undefined &&
+        value[language] !== null &&
+        value[language] !== ""
+    ) {
+
+        return value[language];
+
+    }
+
+
+    /*
+    fallback 到中文
+    */
+
+    if (
+        value.zh !== undefined &&
+        value.zh !== null &&
+        value.zh !== ""
+    ) {
+
+        return value.zh;
+
+    }
+
+
+    return undefined;
 }
 
 
@@ -406,50 +148,26 @@ function getTranslation(object, path) {
 ==========================================================
 取得翻譯
 ==========================================================
-
-如果 English 沒有：
-
-English → Chinese fallback
-==========================================================
 */
 
-function translate(key, language) {
+function translate(key, language = currentLanguage) {
 
-    const currentLanguage =
-        translations[language] || translations.zh;
+    const value =
+        getValue(
+            siteData,
+            key
+        );
 
-    let value =
-        getTranslation(currentLanguage, key);
 
+    const result =
+        getLocalizedValue(
+            value,
+            language
+        );
 
-    /*
-    English 找不到
-    ↓
-    自動使用中文
-    */
 
     if (
-        value === undefined ||
-        value === null ||
-        value === ""
-    ) {
-
-        value =
-            getTranslation(
-                translations.zh,
-                key
-            );
-
-    }
-
-
-    /*
-    連中文也沒有
-    */
-
-    if (
-        value === undefined ||
-        value === null
+        result === undefined
     ) {
 
         return key;
@@ -457,18 +175,20 @@ function translate(key, language) {
     }
 
 
-    return value;
-
+    return result;
 }
 
 
 /*
 ==========================================================
-套用翻譯
+套用文字
 ==========================================================
 */
 
 function applyTranslations(language) {
+
+    currentLanguage = language;
+
 
     document.documentElement.lang =
         language === "en"
@@ -483,7 +203,7 @@ function applyTranslations(language) {
             const key =
                 element.dataset.i18n;
 
-            const text =
+            const value =
                 translate(
                     key,
                     language
@@ -491,7 +211,26 @@ function applyTranslations(language) {
 
 
             /*
-            如果是 input / textarea
+            多段文字
+            */
+
+            if (Array.isArray(value)) {
+
+                element.innerHTML =
+                    value
+                        .map(
+                            paragraph =>
+                                `<p>${escapeHtml(paragraph)}</p>`
+                        )
+                        .join("");
+
+                return;
+
+            }
+
+
+            /*
+            input / textarea
             */
 
             if (
@@ -499,11 +238,17 @@ function applyTranslations(language) {
                 element.tagName === "TEXTAREA"
             ) {
 
-                element.placeholder = text;
+                element.placeholder = value;
 
-            } else {
+            }
 
-                element.textContent = text;
+            /*
+            一般 HTML
+            */
+
+            else {
+
+                element.textContent = value;
 
             }
 
@@ -511,7 +256,7 @@ function applyTranslations(language) {
 
 
     /*
-    更新按鈕狀態
+    更新語言按鈕
     */
 
     document
@@ -530,13 +275,33 @@ function applyTranslations(language) {
 
 /*
 ==========================================================
+HTML Escape
+==========================================================
+*/
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+
+/*
+==========================================================
 設定語言
 ==========================================================
 */
 
 function setLanguage(language) {
 
-    if (!translations[language]) {
+    if (
+        language !== "zh" &&
+        language !== "en"
+    ) {
 
         language = "zh";
 
@@ -549,14 +314,18 @@ function setLanguage(language) {
     );
 
 
-    applyTranslations(language);
+    if (siteData) {
+
+        applyTranslations(language);
+
+    }
 
 }
 
 
 /*
 ==========================================================
-取得瀏覽器語言
+偵測瀏覽器語言
 ==========================================================
 */
 
@@ -567,13 +336,6 @@ function detectBrowserLanguage() {
         navigator.userLanguage ||
         "";
 
-
-    /*
-    zh-TW
-    zh-HK
-    zh-CN
-    ...
-    */
 
     if (
         browserLanguage
@@ -587,6 +349,83 @@ function detectBrowserLanguage() {
 
 
     return "zh";
+}
+
+
+/*
+==========================================================
+取得目前應使用的語言
+==========================================================
+*/
+
+function getInitialLanguage() {
+
+    const savedLanguage =
+        localStorage.getItem(
+            "Jimmy-language"
+        );
+
+
+    if (
+        savedLanguage === "zh" ||
+        savedLanguage === "en"
+    ) {
+
+        return savedLanguage;
+
+    }
+
+
+    return detectBrowserLanguage();
+}
+
+
+/*
+==========================================================
+載入 site.json
+==========================================================
+*/
+
+async function loadSiteData() {
+
+    try {
+
+        const response =
+            await fetch(
+                I18N_DATA_URL
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        siteData =
+            await response.json();
+
+
+        /*
+        載入完成後套用語言
+        */
+
+        applyTranslations(
+            getInitialLanguage()
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load site.json:",
+            error
+        );
+
+    }
 
 }
 
@@ -597,53 +436,13 @@ function detectBrowserLanguage() {
 ==========================================================
 */
 
-function initI18n() {
-
-    const savedLanguage =
-        localStorage.getItem(
-            "Jimmy-language"
-        );
-
-
-    let language;
-
-
-    /*
-    1. 使用使用者之前選擇的語言
-    */
-
-    if (savedLanguage) {
-
-        language = savedLanguage;
-
-    }
-
-    /*
-    2. 第一次進站
-    */
-
-    else {
-
-        language =
-            detectBrowserLanguage();
-
-    }
-
-
-    setLanguage(language);
-
-}
-
-
-/*
-==========================================================
-Language Buttons
-==========================================================
-*/
-
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        /*
+        語言按鈕
+        */
 
         document
             .querySelectorAll("[data-language]")
@@ -663,7 +462,11 @@ document.addEventListener(
             });
 
 
-        initI18n();
+        /*
+        載入網站資料
+        */
+
+        loadSiteData();
 
     }
 );
