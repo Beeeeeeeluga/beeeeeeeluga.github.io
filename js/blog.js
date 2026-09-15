@@ -1,1175 +1,561 @@
-/*
-==========================================================
-Jimmy Website
-Markdown Blog System - Version 3.1
-==========================================================
+// ==========================================================
+// Blog Loader
+// GitHub Repository Markdown Blog
+// ==========================================================
 
-功能：
-
-1. 自動透過 GitHub API 找出 blog/ 裡的 Markdown
-2. 不需要 index.json
-3. 不需要修改 blog.html
-4. 支援 Markdown Front Matter
-5. 中文 / English
-6. English 不存在時 fallback 中文
-7. Blog 列表依日期由新到舊排序
-8. 支援 ?post=xxx 開啟文章
-9. 每篇文章只需要一個 .md 檔案
-==========================================================
-*/
-
-
-/*
-==========================================================
-GitHub Repository 設定
-==========================================================
-
-請修改下面兩個值。
-
-例如：
-
-GitHub：
-https://github.com/Jimmy123/Jimmy123.github.io
-
-那麼：
-
-GITHUB_OWNER = "Jimmy123"
-GITHUB_REPOSITORY = "Jimmy123.github.io"
-
-==========================================================
-*/
-
-const GITHUB_OWNER =
-    "beeeeeeeluga";
-
-const GITHUB_REPOSITORY =
-    "beeeeeeeluga.github.io";
-
-
-const BLOG_DIRECTORY =
-    "blog";
-
-
-/*
-==========================================================
-GitHub API
-==========================================================
-*/
+const GITHUB_OWNER = "beeeeeeeluga";
+const GITHUB_REPOSITORY = "beeeeeeeluga.github.io";
+const BLOG_DIRECTORY = "blog";
 
 const GITHUB_API_URL =
     `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/contents/${BLOG_DIRECTORY}`;
 
 
-/*
-==========================================================
-目前語言
-==========================================================
-*/
+// ==========================================================
+// Language
+// ==========================================================
 
 function getBlogLanguage() {
-
-    return (
-        localStorage.getItem(
-            "Jimmy-language"
-        ) || "zh"
-    );
-
+    return localStorage.getItem("Jimmy-language") || "zh";
 }
 
 
-/*
-==========================================================
-取得雙語資料
-==========================================================
-
-English 沒有時：
-
-English
-   ↓
-Chinese
-==========================================================
-*/
-
-function getLocalizedValue(value) {
-
+function getLocalizedValue(value, language) {
     if (!value) {
-
         return "";
-
     }
-
 
     if (typeof value === "string") {
-
         return value;
-
     }
 
-
-    const language =
-        getBlogLanguage();
-
-
-    if (
-        value[language] !== undefined &&
-        value[language] !== null &&
-        value[language] !== ""
-    ) {
-
-        return value[language];
-
+    if (Array.isArray(value)) {
+        return value;
     }
 
-
-    if (
-        value.zh !== undefined &&
-        value.zh !== null &&
-        value.zh !== ""
-    ) {
-
-        return value.zh;
-
+    if (typeof value === "object") {
+        return value[language] || value.zh || value.en || "";
     }
-
 
     return "";
-
 }
 
 
-/*
-==========================================================
-HTML Escape
-==========================================================
-*/
+// ==========================================================
+// Escape HTML
+// ==========================================================
 
-function escapeHtml(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        text ?? "";
-
-    return div.innerHTML;
-
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-/*
-==========================================================
-讀取 Markdown
-==========================================================
-*/
+// ==========================================================
+// Load Markdown
+// ==========================================================
 
 async function loadMarkdown(filename) {
 
-    const response =
-        await fetch(
-            `${BLOG_DIRECTORY}/${filename}`
-        );
+    const url =
+        `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/main/${BLOG_DIRECTORY}/${encodeURIComponent(filename)}`;
 
+    console.log("[Blog] Loading Markdown:", url);
+
+    const response = await fetch(url);
 
     if (!response.ok) {
-
         throw new Error(
-            `Unable to load Markdown: ${filename}`
+            `Markdown loading failed: HTTP ${response.status} ${response.statusText}`
         );
-
     }
 
-
     return await response.text();
-
 }
 
 
-/*
-==========================================================
-解析 Front Matter
-==========================================================
-
-格式：
-
----
-title_zh: 我的文章
-title_en: My Article
-date: 2026-09-15
-description_zh: 中文簡介
-description_en: English description
----
-
-文章內容
-
-==========================================================
-*/
+// ==========================================================
+// Parse Front Matter
+// ==========================================================
 
 function parseFrontMatter(markdown) {
 
     const result = {
-
-        metadata: {},
-
+        data: {},
         content: markdown
-
     };
 
-
-    const cleanMarkdown =
-        markdown.replace(
-            /^\uFEFF/,
-            ""
-        );
-
-
-    const lines =
-        cleanMarkdown.split(
-            /\r?\n/
-        );
-
-
-    /*
-    沒有 Front Matter
-    */
-
-    if (
-        lines.length === 0 ||
-        lines[0].trim() !== "---"
-    ) {
-
+    if (!markdown.startsWith("---")) {
         return result;
-
     }
 
+    const endIndex = markdown.indexOf("\n---", 3);
 
-    let endIndex = -1;
-
-
-    for (
-        let i = 1;
-        i < lines.length;
-        i++
-    ) {
-
-        if (
-            lines[i].trim() === "---"
-        ) {
-
-            endIndex = i;
-
-            break;
-
-        }
-
-    }
-
-
-    /*
-    沒有找到結束 ---
-    */
-
-    if (
-        endIndex === -1
-    ) {
-
+    if (endIndex === -1) {
         return result;
-
     }
 
+    const frontMatter = markdown
+        .substring(3, endIndex)
+        .trim();
 
-    /*
-    解析 metadata
-    */
+    const content = markdown
+        .substring(endIndex + 4)
+        .trim();
 
-    for (
-        let i = 1;
-        i < endIndex;
-        i++
-    ) {
+    frontMatter.split("\n").forEach(line => {
 
-        const line =
-            lines[i];
+        const separator = line.indexOf(":");
 
-
-        if (
-            !line.trim()
-        ) {
-
-            continue;
-
+        if (separator === -1) {
+            return;
         }
 
-
-        const separator =
-            line.indexOf(":");
-
-
-        if (
-            separator === -1
-        ) {
-
-            continue;
-
-        }
-
-
-        const key =
-            line
-                .slice(
-                    0,
-                    separator
-                )
-                .trim();
-
-
-        let value =
-            line
-                .slice(
-                    separator + 1
-                )
-                .trim();
-
-
-        /*
-        移除單引號 / 雙引號
-        */
-
-        if (
-            (
-                value.startsWith('"') &&
-                value.endsWith('"')
-            ) ||
-            (
-                value.startsWith("'") &&
-                value.endsWith("'")
-            )
-        ) {
-
-            value =
-                value.slice(
-                    1,
-                    -1
-                );
-
-        }
-
-
-        result.metadata[key] =
-            value;
-
-    }
-
-
-    /*
-    Markdown 正文
-    */
-
-    result.content =
-        lines
-            .slice(
-                endIndex + 1
-            )
-            .join("\n")
+        const key = line
+            .substring(0, separator)
             .trim();
 
+        let value = line
+            .substring(separator + 1)
+            .trim();
+
+        // Remove quotation marks
+        if (
+            (value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("'") && value.endsWith("'"))
+        ) {
+            value = value.substring(1, value.length - 1);
+        }
+
+        result.data[key] = value;
+    });
+
+    result.content = content;
 
     return result;
-
 }
 
 
-/*
-==========================================================
-取得文章標題
-==========================================================
-*/
+// ==========================================================
+// Blog metadata
+// ==========================================================
 
-function getPostTitle(metadata) {
+function getPostTitle(data) {
 
-    const language =
-        getBlogLanguage();
+    const language = getBlogLanguage();
 
-
-    if (
-        language === "en" &&
-        metadata.title_en
-    ) {
-
-        return metadata.title_en;
-
+    if (language === "en") {
+        return (
+            data.title_en ||
+            data.title_zh ||
+            data.title ||
+            "Untitled"
+        );
     }
 
-
-    if (
-        metadata.title_zh
-    ) {
-
-        return metadata.title_zh;
-
-    }
-
-
-    /*
-    相容單語 title
-    */
-
-    if (
-        metadata.title
-    ) {
-
-        return metadata.title;
-
-    }
-
-
-    return "Untitled";
-
+    return (
+        data.title_zh ||
+        data.title_en ||
+        data.title ||
+        "未命名文章"
+    );
 }
 
 
-/*
-==========================================================
-取得文章 Description
-==========================================================
-*/
+function getPostDescription(data) {
 
-function getPostDescription(metadata) {
+    const language = getBlogLanguage();
 
-    const language =
-        getBlogLanguage();
-
-
-    if (
-        language === "en" &&
-        metadata.description_en
-    ) {
-
-        return metadata.description_en;
-
+    if (language === "en") {
+        return (
+            data.description_en ||
+            data.description_zh ||
+            data.description ||
+            ""
+        );
     }
 
-
-    if (
-        metadata.description_zh
-    ) {
-
-        return metadata.description_zh;
-
-    }
-
-
-    if (
-        metadata.description
-    ) {
-
-        return metadata.description;
-
-    }
-
-
-    return "";
-
+    return (
+        data.description_zh ||
+        data.description_en ||
+        data.description ||
+        ""
+    );
 }
 
 
-/*
-==========================================================
-日期
-==========================================================
-*/
-
-function getPostDate(metadata) {
-
-    return metadata.date || "";
-
+function getPostDate(data) {
+    return data.date || "";
 }
 
-
-/*
-==========================================================
-格式化日期
-==========================================================
-*/
 
 function formatDate(dateString) {
 
     if (!dateString) {
-
         return "";
-
     }
 
+    const date = new Date(dateString);
 
-    const date =
-        new Date(dateString);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
         return dateString;
-
     }
-
 
     return date.toLocaleDateString(
-        getBlogLanguage() === "en"
-            ? "en-US"
-            : "zh-TW",
+        getBlogLanguage() === "en" ? "en-US" : "zh-TW",
         {
             year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
+            month: "long",
+            day: "numeric"
         }
     );
-
 }
 
 
-/*
-==========================================================
-取得 GitHub Blog 檔案列表
-==========================================================
-*/
+// ==========================================================
+// Get blog files from GitHub
+// ==========================================================
 
 async function getBlogFiles() {
 
-    const response =
-        await fetch(
-            GITHUB_API_URL,
-            {
-                headers: {
-                    "Accept":
-                        "application/vnd.github+json"
-                }
-            }
-        );
+    console.log("[Blog] GitHub API:", GITHUB_API_URL);
 
+    const response = await fetch(GITHUB_API_URL, {
+        headers: {
+            "Accept": "application/vnd.github+json"
+        }
+    });
 
     if (!response.ok) {
 
-        throw new Error(
-            `GitHub API error: HTTP ${response.status}`
-        );
+        let message = "";
 
+        try {
+            const errorData = await response.json();
+            message = errorData.message || "";
+        } catch (_) {
+            // Ignore JSON parse error
+        }
+
+        throw new Error(
+            `GitHub API failed: HTTP ${response.status} ${response.statusText}` +
+            (message ? ` - ${message}` : "")
+        );
     }
 
+    const files = await response.json();
 
-    const files =
-        await response.json();
+    if (!Array.isArray(files)) {
+        throw new Error("GitHub API did not return a directory listing.");
+    }
 
-
-    /*
-    只保留 Markdown
-    */
-
-    return files.filter(
-        file =>
+    return files
+        .filter(file =>
             file.type === "file" &&
-            file.name
-                .toLowerCase()
-                .endsWith(".md")
-    );
-
+            file.name.toLowerCase().endsWith(".md")
+        )
+        .map(file => file.name);
 }
 
 
-/*
-==========================================================
-建立 Blog Card
-==========================================================
-*/
+// ==========================================================
+// Render Markdown
+// ==========================================================
 
-function createBlogCard(
-    metadata,
-    filename
-) {
+function renderMarkdown(markdown) {
 
-    const title =
-        getPostTitle(
-            metadata
+    if (typeof marked === "undefined") {
+        throw new Error(
+            "Marked.js is not loaded. Check the marked CDN script in blog.html."
         );
+    }
 
-
-    const description =
-        getPostDescription(
-            metadata
-        );
-
-
-    const date =
-        formatDate(
-            getPostDate(
-                metadata
-            )
-        );
-
-
-    return `
-        <a
-            href="blog.html?post=${encodeURIComponent(filename)}"
-            class="blog-card"
-        >
-
-            <div class="blog-date">
-                ${escapeHtml(date)}
-            </div>
-
-
-            <div class="blog-content">
-
-                <h2>
-                    ${escapeHtml(title)}
-                </h2>
-
-
-                ${
-                    description
-                        ? `
-                            <p>
-                                ${escapeHtml(description)}
-                            </p>
-                        `
-                        : ""
-                }
-
-            </div>
-
-
-            <span class="card-arrow">
-                →
-            </span>
-
-        </a>
-    `;
-
+    return marked.parse(markdown, {
+        breaks: true,
+        gfm: true
+    });
 }
 
 
-/*
-==========================================================
-載入 Blog 列表
-==========================================================
-*/
+// ==========================================================
+// Blog list
+// ==========================================================
 
 async function loadBlogList() {
 
-    const container =
-        document.getElementById(
-            "blog-container"
-        );
-
+    const container = document.getElementById("blog-container");
 
     if (!container) {
-
         return;
-
     }
 
+    container.innerHTML = `
+        <div class="blog-loading">
+            Loading...
+        </div>
+    `;
 
     try {
 
-        /*
-        從 GitHub API 找出所有 .md
-        */
+        const files = await getBlogFiles();
 
-        const files =
-            await getBlogFiles();
+        console.log("[Blog] Markdown files:", files);
 
-
-        /*
-        沒有文章
-        */
-
-        if (
-            files.length === 0
-        ) {
+        if (files.length === 0) {
 
             container.innerHTML = `
                 <div class="blog-empty">
-
-                    <p>
-                        No blog posts yet.
-                    </p>
-
+                    <p>目前還沒有部落格文章。</p>
                 </div>
             `;
 
             return;
-
         }
 
+        const posts = [];
 
-        /*
-        讀取所有文章
-        */
+        for (const filename of files) {
 
-        const posts =
-            await Promise.all(
+            try {
 
-                files.map(
-                    async file => {
+                const markdown = await loadMarkdown(filename);
+                const parsed = parseFrontMatter(markdown);
 
-                        try {
+                posts.push({
+                    filename,
+                    data: parsed.data,
+                    content: parsed.content
+                });
 
-                            const markdown =
-                                await loadMarkdown(
-                                    file.name
-                                );
+            } catch (error) {
 
-
-                            const parsed =
-                                parseFrontMatter(
-                                    markdown
-                                );
-
-
-                            return {
-
-                                filename:
-                                    file.name,
-
-                                metadata:
-                                    parsed.metadata,
-
-                                content:
-                                    parsed.content
-
-                            };
-
-                        } catch (error) {
-
-                            console.error(
-                                `Failed to load ${file.name}:`,
-                                error
-                            );
-
-
-                            return null;
-
-                        }
-
-                    }
-                )
-
-            );
-
-
-        /*
-        移除失敗文章
-        */
-
-        const validPosts =
-            posts.filter(
-                post =>
-                    post !== null
-            );
-
-
-        /*
-        日期由新到舊
-        */
-
-        validPosts.sort(
-            (a, b) => {
-
-                const dateA =
-                    new Date(
-                        a.metadata.date ||
-                        0
-                    );
-
-
-                const dateB =
-                    new Date(
-                        b.metadata.date ||
-                        0
-                    );
-
-
-                return dateB - dateA;
+                console.error(
+                    `[Blog] Failed to load ${filename}:`,
+                    error
+                );
 
             }
-        );
+        }
+
+        posts.sort((a, b) => {
+
+            const dateA = new Date(a.data.date || 0);
+            const dateB = new Date(b.data.date || 0);
+
+            return dateB - dateA;
+        });
 
 
-        /*
-        產生 Blog Cards
-        */
+        container.innerHTML = posts.map(post => {
 
-        container.innerHTML =
-            validPosts
-                .map(
-                    post =>
-                        createBlogCard(
-                            post.metadata,
-                            post.filename
-                        )
-                )
-                .join("");
+            const title = escapeHtml(
+                getPostTitle(post.data)
+            );
+
+            const description = escapeHtml(
+                getPostDescription(post.data)
+            );
+
+            const date = escapeHtml(
+                formatDate(getPostDate(post.data))
+            );
+
+            return `
+                <a
+                    class="blog-card"
+                    href="blog.html?post=${encodeURIComponent(post.filename)}"
+                >
+                    <div class="blog-card-content">
+
+                        <div class="blog-card-date">
+                            ${date}
+                        </div>
+
+                        <h2>
+                            ${title}
+                        </h2>
+
+                        ${
+                            description
+                                ? `<p>${description}</p>`
+                                : ""
+                        }
+
+                    </div>
+                </a>
+            `;
+
+        }).join("");
 
 
     } catch (error) {
 
-        console.error(
-            "Blog loading failed:",
-            error
-        );
-
+        console.error("[Blog] Unable to load blog:", error);
 
         container.innerHTML = `
-            <div class="blog-empty">
+            <div class="blog-error">
 
-                <h2>
-                    Unable to load blog
-                </h2>
+                <h2>Unable to load blog</h2>
 
                 <p>
                     Please try again later.
                 </p>
 
+                <details>
+                    <summary>Technical details</summary>
+
+                    <pre>${escapeHtml(error.message)}</pre>
+
+                </details>
+
             </div>
         `;
-
     }
-
 }
 
 
-/*
-==========================================================
-Markdown → HTML
-==========================================================
-*/
+// ==========================================================
+// Single blog post
+// ==========================================================
 
-function renderMarkdown(markdown) {
+async function loadBlogPost(filename) {
 
-    if (
-        typeof marked === "undefined"
-    ) {
-
-        console.error(
-            "Marked.js is not loaded."
-        );
-
-
-        return `
-            <p>
-                Markdown renderer is unavailable.
-            </p>
-        `;
-
-    }
-
-
-    return marked.parse(
-        markdown,
-        {
-            breaks: true,
-            gfm: true
-        }
-    );
-
-}
-
-
-/*
-==========================================================
-載入單篇 Blog
-==========================================================
-*/
-
-async function loadBlogPost(
-    filename
-) {
-
-    const container =
-        document.getElementById(
-            "blog-container"
-        );
-
+    const container = document.getElementById("blog-container");
 
     if (!container) {
-
         return;
-
     }
 
+    container.innerHTML = `
+        <div class="blog-loading">
+            Loading...
+        </div>
+    `;
 
     try {
 
-        /*
-        讀取 Markdown
-        */
+        const markdown = await loadMarkdown(filename);
 
-        const markdown =
-            await loadMarkdown(
-                filename
-            );
+        const parsed = parseFrontMatter(markdown);
 
+        const title = getPostTitle(parsed.data);
+        const date = formatDate(getPostDate(parsed.data));
 
-        /*
-        Front Matter
-        */
+        const html = renderMarkdown(parsed.content);
 
-        const parsed =
-            parseFrontMatter(
-                markdown
-            );
-
-
-        const metadata =
-            parsed.metadata;
-
-
-        const title =
-            getPostTitle(
-                metadata
-            );
-
-
-        const description =
-            getPostDescription(
-                metadata
-            );
-
-
-        const date =
-            formatDate(
-                metadata.date
-            );
-
-
-        /*
-        Markdown → HTML
-        */
-
-        const articleHtml =
-            renderMarkdown(
-                parsed.content
-            );
-
-
-        /*
-        建立文章頁
-        */
+        document.title = `${title} - Jimmy`;
 
         container.innerHTML = `
-
             <article class="blog-post">
 
                 <header class="blog-post-header">
 
-                    <p class="blog-date">
+                    <div class="blog-post-date">
                         ${escapeHtml(date)}
-                    </p>
-
+                    </div>
 
                     <h1>
                         ${escapeHtml(title)}
                     </h1>
 
-
-                    ${
-                        description
-                            ? `
-                                <p class="blog-post-description">
-                                    ${escapeHtml(description)}
-                                </p>
-                            `
-                            : ""
-                    }
-
                 </header>
 
-
                 <div class="blog-post-content">
-
-                    ${articleHtml}
-
-                </div>
-
-
-                <div class="blog-post-back">
-
-                    <a
-                        href="blog.html"
-                    >
-                        ←
-                        ${
-                            getBlogLanguage() === "en"
-                                ? "Back to Blog"
-                                : "返回部落格"
-                        }
-                    </a>
-
+                    ${html}
                 </div>
 
             </article>
-
         `;
 
-
-        /*
-        更新 Browser Title
-        */
-
-        document.title =
-            `${title} — Jimmy`;
-
-
-        /*
-        回到頂部
-        */
-
-        window.scrollTo(
-            0,
-            0
-        );
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
 
     } catch (error) {
 
         console.error(
-            "Blog post loading failed:",
+            "[Blog] Unable to load post:",
             error
         );
 
-
         container.innerHTML = `
+            <div class="blog-error">
 
-            <div class="blog-empty">
-
-                <h1>
-                    Article Not Found
-                </h1>
-
+                <h2>Unable to load article</h2>
 
                 <p>
-                    Unable to load this blog post.
+                    Please try again later.
                 </p>
 
+                <details>
+                    <summary>Technical details</summary>
 
-                <a
-                    href="blog.html"
-                    class="button"
-                >
-                    ←
-                    ${
-                        getBlogLanguage() === "en"
-                            ? "Back to Blog"
-                            : "返回部落格"
-                    }
-                </a>
+                    <pre>${escapeHtml(error.message)}</pre>
+
+                </details>
 
             </div>
-
         `;
-
     }
-
 }
 
 
-/*
-==========================================================
-取得 URL 裡的文章
-==========================================================
-*/
+// ==========================================================
+// Language change
+// ==========================================================
 
-function getRequestedPost() {
+function reloadBlog() {
 
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    return params.get(
-        "post"
+    const params = new URLSearchParams(
+        window.location.search
     );
 
+    const post = params.get("post");
+
+    if (post) {
+        loadBlogPost(post);
+    } else {
+        loadBlogList();
+    }
 }
 
 
-/*
-==========================================================
-語言切換
-==========================================================
-*/
+// ==========================================================
+// Initialize
+// ==========================================================
 
-document.addEventListener(
-    "click",
-    event => {
+document.addEventListener("DOMContentLoaded", () => {
 
-        const button =
-            event.target.closest(
-                "[data-language]"
-            );
+    const params = new URLSearchParams(
+        window.location.search
+    );
 
+    const post = params.get("post");
 
-        if (!button) {
-
-            return;
-
-        }
-
-
-        setTimeout(
-            () => {
-
-                const post =
-                    getRequestedPost();
-
-
-                if (post) {
-
-                    loadBlogPost(
-                        post
-                    );
-
-                } else {
-
-                    loadBlogList();
-
-                }
-
-            },
-            100
-        );
-
+    if (post) {
+        loadBlogPost(post);
+    } else {
+        loadBlogList();
     }
-);
 
 
-/*
-==========================================================
-Initialize
-==========================================================
-*/
+    document
+        .querySelectorAll("[data-language]")
+        .forEach(button => {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+            button.addEventListener("click", () => {
 
-        const post =
-            getRequestedPost();
+                setTimeout(() => {
+                    reloadBlog();
+                }, 100);
 
+            });
 
-        if (post) {
+        });
 
-            loadBlogPost(
-                post
-            );
-
-        } else {
-
-            loadBlogList();
-
-        }
-
-    }
-);
+});
