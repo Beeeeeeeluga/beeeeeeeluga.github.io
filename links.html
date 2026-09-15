@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title data-i18n="pages.links">
+        連結列表 · Jimmy
+    </title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="index.html" class="logo">
+            Jimmy
+        </a>
+
+        <button class="menu-toggle" aria-label="Menu">
+            ☰
+        </button>
+
+        <nav class="nav-menu">
+
+            <a href="index.html"
+               data-i18n="nav.about">
+                關於我
+            </a>
+
+            <a href="projects.html"
+               data-i18n="nav.projects">
+                我的專案
+            </a>
+
+            <a href="links.html"
+               data-i18n="nav.links">
+                連結列表
+            </a>
+
+            <a href="blog.html"
+               data-i18n="nav.blog">
+                我的部落格
+            </a>
+
+            <div class="language-switcher">
+
+                <button type="button"
+                        data-language="zh">
+                    中
+                </button>
+
+                <span>|</span>
+
+                <button type="button"
+                        data-language="en">
+                    EN
+                </button>
+
+            </div>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="page-header">
+
+        <p class="eyebrow">
+            LINKS
+        </p>
+
+        <h1 data-i18n="pages.links">
+            連結列表
+        </h1>
+
+        <p data-i18n="pages.linksDescription">
+            我的網站、社群與其他相關連結。
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="link-grid">
+
+
+            <a href="https://github.com/"
+               target="_blank"
+               rel="noopener"
+               class="link-card">
+
+                <div>
+
+                    <p class="card-label">
+                        GITHUB
+                    </p>
+
+                    <h2>
+                        GitHub
+                    </h2>
+
+                    <p data-i18n="links.github">
+                        我的程式碼與開源專案。
+                    </p>
+
+                </div>
+
+                <span class="card-arrow">
+                    ↗
+                </span>
+
+            </a>
+
+
+            <a href="https://xhakyialk.com/"
+               target="_blank"
+               rel="noopener"
+               class="link-card">
+
+                <div>
+
+                    <p class="card-label">
+                        WEBSITE
+                    </p>
+
+                    <h2>
+                        xhakyialk
+                    </h2>
+
+                    <p data-i18n="links.xhakyialk">
+                        Minecraft 社群網站。
+                    </p>
+
+                </div>
+
+                <span class="card-arrow">
+                    ↗
+                </span>
+
+            </a>
+
+
+            <a href="#"
+               class="link-card">
+
+                <div>
+
+                    <p class="card-label">
+                        DISCORD
+                    </p>
+
+                    <h2>
+                        Discord
+                    </h2>
+
+                    <p data-i18n="links.discord">
+                        我的 Discord 社群。
+                    </p>
+
+                </div>
+
+                <span class="card-arrow">
+                    ↗
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <p>
+        © <span id="current-year"></span> Jimmy
+    </p>
+
+</footer>
+
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
