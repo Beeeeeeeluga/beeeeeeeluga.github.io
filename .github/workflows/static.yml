@@ -2,42 +2,173 @@
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
+
     steps:
+
+      # ==========================================================
+      # Checkout
+      # ==========================================================
+
       - name: Checkout
         uses: actions/checkout@v4
+
+
+      # ==========================================================
+      # Generate Blog Index
+      # ==========================================================
+
+      - name: Generate blog posts index
+        shell: bash
+        run: |
+
+          python3 <<'PY'
+
+          import os
+          import re
+          import json
+
+          BLOG_DIR = "blog"
+          OUTPUT_FILE = os.path.join(BLOG_DIR, "posts.json")
+
+          posts = []
+
+          if not os.path.isdir(BLOG_DIR):
+              print("Blog directory does not exist.")
+              os.makedirs(BLOG_DIR, exist_ok=True)
+
+          for filename in os.listdir(BLOG_DIR):
+
+              if not filename.lower().endswith(".md"):
+                  continue
+
+              filepath = os.path.join(BLOG_DIR, filename)
+
+              with open(filepath, "r", encoding="utf-8") as f:
+                  content = f.read()
+
+              metadata = {}
+
+              # --------------------------------------------------
+              # Parse YAML-like front matter
+              # --------------------------------------------------
+
+              if content.startswith("---"):
+
+                  match = re.match(
+                      r"^---\s*\n(.*?)\n---",
+                      content,
+                      re.DOTALL
+                  )
+
+                  if match:
+
+                      front_matter = match.group(1)
+
+                      for line in front_matter.splitlines():
+
+                          if ":" not in line:
+                              continue
+
+                          key, value = line.split(":", 1)
+
+                          key = key.strip()
+                          value = value.strip()
+
+                          if (
+                              len(value) >= 2
+                              and value[0] == value[-1]
+                              and value[0] in ['"', "'"]
+                          ):
+                              value = value[1:-1]
+
+                          metadata[key] = value
+
+              posts.append({
+                  "filename": filename,
+                  "title_zh": metadata.get("title_zh", ""),
+                  "title_en": metadata.get("title_en", ""),
+                  "date": metadata.get("date", ""),
+                  "description_zh": metadata.get("description_zh", ""),
+                  "description_en": metadata.get("description_en", "")
+              })
+
+
+          # ------------------------------------------------------
+          # Sort newest first
+          # ------------------------------------------------------
+
+          posts.sort(
+              key=lambda post: post.get("date", ""),
+              reverse=True
+          )
+
+
+          # ------------------------------------------------------
+          # Write JSON
+          # ------------------------------------------------------
+
+          with open(
+              OUTPUT_FILE,
+              "w",
+              encoding="utf-8"
+          ) as f:
+
+              json.dump(
+                  posts,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          print(f"Generated {OUTPUT_FILE}")
+          print(f"Found {len(posts)} Markdown posts.")
+
+          PY
+
+
+      # ==========================================================
+      # Setup Pages
+      # ==========================================================
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+
+      # ==========================================================
+      # Upload
+      # ==========================================================
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: '.'
+
+
+      # ==========================================================
+      # Deploy
+      # ==========================================================
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
