@@ -15,7 +15,9 @@
 
             "label": "GITHUB",
 
-            "url": "https://github.com/Beeeeeeeluga"
+            "url": "https://github.com/Beeeeeeeluga",
+
+            "icon": "https://imgur.com/xxxxx.png"
         },
 
         {
@@ -33,7 +35,9 @@
 
             "label": "WEBSITE",
 
-            "url": "https://xhakyialk.com/"
+            "url": "https://xhakyialk.com/",
+
+            "icon": "https://imgur.com/xxxxx.png"
         },
 
         {
@@ -51,7 +55,9 @@
 
             "label": "DISCORD",
 
-            "url": "https://discord.gg/hQNy8F6HQ4"
+            "url": "https://discord.gg/hQNy8F6HQ4",
+
+            "icon": "https://imgur.com/xxxxx.png"
         },
 
         {
@@ -69,7 +75,9 @@
 
             "label": "DISCORD",
 
-            "url": "https://discord.gg/kB7dWtQZKx"
+            "url": "https://discord.gg/kB7dWtQZKx",
+
+            "icon": "https://imgur.com/xxxxx.png"
         }
     ]
 }
