@@ -1,6 +1,6 @@
-# Simple workflow for deploying static content to Pages
+# Simple workflow for deploying static content to GitHub Pages
 
-name: Deploy static content to Pages - BLOG TEST
+name: Deploy static content to Pages
 
 on:
   push:
@@ -32,67 +32,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-
-      # ==========================================
-      # Generate Blog HTML
-      # ==========================================
-
-      - name: Generate Blog HTML
-        run: |
-          echo "===== BEFORE ====="
-          ls -la blog
-      
-          echo "===== GENERATE ====="
-          python3 scripts/generate-blog.py
-      
-          echo "===== AFTER ====="
-          ls -la blog
-      
-          echo "===== GENERATED HTML ====="
-          find blog -maxdepth 1 -type f -name "*.html" -print
-
-      
-      - name: Verify generated files
-        run: |
-          echo "===== BLOG FILES ====="
-          find blog -maxdepth 1 -type f -print
-      
-          echo "===== TEST HTML ====="
-          test -f blog/test.html
-          echo "blog/test.html exists!"
-      
-          echo "===== HTML HEAD ====="
-          head -40 blog/test.html
-
-      - name: Show deployment files
-        run: |
-          echo "===== ALL HTML FILES ====="
-          find . -type f -name "*.html" -print
-      
-          echo "===== TEST HTML SIZE ====="
-          wc -c blog/test.html
-      
-          echo "===== ROOT ====="
-          ls -la
-      
-          echo "===== BLOG ====="
-          ls -la blog
-
-
-      # ==========================================
-      # GitHub Pages
-      # ==========================================
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
-
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-
 
       - name: Deploy to GitHub Pages
         id: deployment
