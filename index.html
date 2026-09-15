@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Jimmy 的個人網站，分享我的專案、開發紀錄與技術文章。">
+
+    <title>Jimmy — 關於我</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- 導覽列 -->
+    <header class="site-header">
+        <nav class="navbar">
+
+            <a href="index.html" class="site-logo">
+                Jimmy
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="開啟選單">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" data-page="index">關於我</a>
+                <a href="projects.html" data-page="projects">我的專案</a>
+                <a href="links.html" data-page="links">連結列表</a>
+                <a href="blog.html" data-page="blog">我的部落格</a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <main>
+
+        <!-- Hero -->
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="eyebrow">HELLO, I'M</p>
+
+                <h1>Jimmy</h1>
+
+                <p class="hero-subtitle">
+                    Developer · BSc Student
+                </p>
+
+                <p class="hero-description">
+                    喜歡研究程式設計、Web 開發與 Discord 相關技術。
+                    這裡是我的個人空間，用來分享我的專案、開發紀錄與一些想法。
+                </p>
+
+                <div class="hero-actions">
+                    <a href="projects.html" class="button button-primary">
+                        查看我的專案
+                    </a>
+
+                    <a href="blog.html" class="button button-secondary">
+                        閱讀部落格
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- About -->
+        <section class="section">
+
+            <div class="section-heading">
+                <p class="eyebrow">ABOUT ME</p>
+                <h2>關於我</h2>
+            </div>
+
+            <div class="about-content">
+
+                <p>
+                    你好，我是 Jimmy。
+                </p>
+
+                <p>
+                    我目前正在學習程式設計，並透過各種個人專案
+                    實際探索 Web 開發、JavaScript、Minecraft、Discord
+                    以及伺服器（ubuntu）相關技術。
+                </p>
+
+                <p>
+                    我喜歡從零開始製作自己的工具與網站，
+                    也喜歡研究如何把不同的技術組合在一起。
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- Featured Projects -->
+        <section class="section">
+
+            <div class="section-heading section-heading-with-link">
+
+                <div>
+                    <p class="eyebrow">FEATURED PROJECTS</p>
+                    <h2>我的專案</h2>
+                </div>
+
+                <a href="projects.html" class="text-link">
+                    查看全部 →
+                </a>
+
+            </div>
+
+
+            <div class="project-grid">
+
+                <a href="projects.html" class="project-card">
+
+                    <div class="card-number">
+                        01
+                    </div>
+
+                    <div class="card-content">
+
+                        <h3>xhakyialk</h3>
+
+                        <p>
+                            一個以 Minecraft 社群與伺服器為核心的
+                            個人 Web 專案。
+                        </p>
+
+                        <span class="card-link">
+                            查看專案 →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <a href="projects.html" class="project-card">
+
+                    <div class="card-number">
+                        02
+                    </div>
+
+                    <div class="card-content">
+
+                        <h3>BedrockBridge Plugins</h3>
+
+                        <p>
+                            Minecraft Bedrock Edition 的
+                            JavaScript Plugin 開發。
+                        </p>
+
+                        <span class="card-link">
+                            查看專案 →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <a href="projects.html" class="project-card">
+
+                    <div class="card-number">
+                        03
+                    </div>
+
+                    <div class="card-content">
+
+                        <h3>Minecraft Map</h3>
+
+                        <p>
+                            使用 uNmINeD 建立 Minecraft
+                            世界地圖展示系統。
+                        </p>
+
+                        <span class="card-link">
+                            查看專案 →
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+                <a href="projects.html" class="project-card">
+
+                    <div class="card-number">
+                        04
+                    </div>
+
+                    <div class="card-content">
+
+                        <h3>Other Projects</h3>
+
+                        <p>
+                            其他正在研究、製作或實驗中的
+                            個人專案。
+                        </p>
+
+                        <span class="card-link">
+                            查看專案 →
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div>
+                <span class="footer-logo">Jimmy</span>
+            </div>
+
+            <div>
+                <p>
+                    © <span id="currentYear"></span> Jimmy.
+                    All rights reserved.
+                </p>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
