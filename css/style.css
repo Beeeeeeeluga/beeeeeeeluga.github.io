@@ -338,6 +338,11 @@ button {
 
 }
 
+.description {
+    white-space: pre-line;
+}
+
+
 
 .hero-buttons {
 
