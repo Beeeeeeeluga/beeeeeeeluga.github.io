@@ -3,7 +3,7 @@
 // Markdown + GitHub Actions generated index
 // ==========================================================
 
-const BLOG_INDEX_URL = "blog/posts.json";
+const BLOG_INDEX_URL = "./blog/posts.json";
 
 
 // ==========================================================
