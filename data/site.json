@@ -1,0 +1,121 @@
+{
+    "nav": {
+        "about": {
+            "zh": "關於我",
+            "en": "About Me"
+        },
+        "projects": {
+            "zh": "我的專案",
+            "en": "Projects"
+        },
+        "links": {
+            "zh": "連結列表",
+            "en": "Links"
+        },
+        "blog": {
+            "zh": "我的部落格",
+            "en": "Blog"
+        }
+    },
+
+    "home": {
+        "eyebrow": {
+            "zh": "你好，我是",
+            "en": "HELLO, I'M"
+        },
+
+        "role": {
+            "zh": "Developer · BSc Student",
+            "en": "Developer · BSc Student"
+        },
+
+        "description": {
+            "zh": "喜歡研究程式設計、Web 開發與 Minecraft、Discord、node.js 相關技術。",
+            "en": "I enjoy programming, web development and technologies related to Minecraft, Discord, and Node.js."
+        },
+
+        "projects": {
+            "zh": "我的專案",
+            "en": "My Projects"
+        },
+
+        "blog": {
+            "zh": "閱讀部落格",
+            "en": "Read My Blog"
+        },
+
+        "featuredProjects": {
+            "zh": "精選專案",
+            "en": "Featured Projects"
+        },
+
+        "viewAll": {
+            "zh": "查看全部 →",
+            "en": "View All →"
+        }
+    },
+
+    "about": {
+        "title": {
+            "zh": "關於我",
+            "en": "About Me"
+        },
+
+        "description": {
+            "zh": [
+                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Discord 相關工具與各種自己感興趣的專案。",
+                "我平常在 Windows 11 上寫程式，並透過 Git push 將成果部署到虛擬機。",
+                "目前我擁有三台虛擬機：一台是 Oracle VM 4C24GB 永久免費方案（新加坡機房、ARM64、Ubuntu 22.04），用來架設 Nginx 網頁伺服器（搭配 Cloudflare）、Discord 機器人（discord.py）、搜尋引擎、Wiki.js 與 Artalk 留言系統；",
+                "一台是 Oracle VM E2 micro 永久免費方案（新加坡機房、x86、Ubuntu 22.04），用來測試 BedrockBridge 外掛；",
+                "另一台是 OVHCloud VM（AMD Ryzen 7 7700 8-Core、16GB RAM、香港機房、Ubuntu 22.04），用來運行一個約 850 人的公開社群專案。"
+            ],
+
+            "en": [
+                "I’m a student who loves exploring programming and web technologies. I build websites, Discord-related tools, and various projects that I’m personally interested in.",
+                "I usually write code on Windows 11 and deploy it to my virtual machines via Git push.",
+                "I currently run three VMs: an Oracle VM 4C24GB Always Free instance (Singapore, ARM64, Ubuntu 22.04) that hosts an Nginx web server with Cloudflare, a Discord bot using discord.py, a search engine, Wiki.js, and the Artalk comment system;",
+                "an Oracle VM E2 micro Always Free instance (Singapore, x86, Ubuntu 22.04) used for testing BedrockBridge plugins;",
+                "and an OVHCloud VM (AMD Ryzen 7 7700 8-Core, 16GB RAM, Hong Kong, Ubuntu 22.04) that runs a public community project with around 850 members.",
+                "This experience has helped me become more familiar with Linux and server operations.",
+                "I can handle basic Ubuntu/Linux CLI commands, know a little Python, and work with JavaScript, CSS, HTML, and PHP. My main interest is frontend development."
+            ]
+        },
+
+        "description2": {
+            "zh": "我喜歡從實際的問題出發，慢慢研究技術並將它實作出來。",
+            "en": "I like starting from real-world problems, learning how things work and turning ideas into working projects."
+        }
+    },
+
+    "pages": {
+        "projects": {
+            "zh": "我的專案",
+            "en": "Projects"
+        },
+
+        "projectsDescription": {
+            "zh": "我正在製作或曾經製作的一些專案。",
+            "en": "Some of the projects I am working on or have worked on."
+        },
+
+        "links": {
+            "zh": "連結列表",
+            "en": "Links"
+        },
+
+        "linksDescription": {
+            "zh": "我的網站、社群與其他相關連結。",
+            "en": "My websites, communities and other related links."
+        },
+
+        "blog": {
+            "zh": "我的部落格",
+            "en": "Blog"
+        },
+
+        "blogDescription": {
+            "zh": "我的開發紀錄、技術筆記與一些想法。",
+            "en": "Development logs, technical notes and thoughts."
+        }
+    }
+}
