@@ -40,10 +40,10 @@ GITHUB_REPOSITORY = "Jimmy123.github.io"
 */
 
 const GITHUB_OWNER =
-    "YOUR_GITHUB_USERNAME";
+    "beeeeeeeluga";
 
 const GITHUB_REPOSITORY =
-    "YOUR_GITHUB_REPOSITORY";
+    "beeeeeeeluga.github.io";
 
 
 const BLOG_DIRECTORY =
