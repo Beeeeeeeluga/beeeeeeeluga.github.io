@@ -42,10 +42,10 @@ const translations = {
 
             eyebrow: "你好，我是",
 
-            role: "Developer · Coding Student",
+            role: "Developer · BSc Student",
 
             description:
-                "喜歡研究程式設計、Web 開發與 Minecraft 相關技術。",
+                "喜歡研究程式設計、Web 開發與 Minecraft、Discord、node.js 相關技術。",
 
             projects: "我的專案",
 
@@ -63,7 +63,7 @@ const translations = {
             title: "關於我",
 
             description:
-                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Minecraft 相關工具與各種自己感興趣的專案。",
+                "我是一名喜歡研究程式設計與網路技術的學生。平時會製作網站、Discord 相關工具與各種自己感興趣的專案。",
 
             description2:
                 "我喜歡從實際的問題出發，慢慢研究技術並將它實作出來。"
@@ -211,10 +211,10 @@ const translations = {
 
             eyebrow: "HELLO, I'M",
 
-            role: "Developer · Coding Student",
+            role: "Developer · BSc Student",
 
             description:
-                "I enjoy programming, web development and Minecraft-related technologies.",
+                "I enjoy programming, web development and Minecraft, Discord-related technologies.",
 
             projects: "My Projects",
 
@@ -232,7 +232,7 @@ const translations = {
             title: "About Me",
 
             description:
-                "I'm a coding student interested in programming and web technologies. I enjoy building websites, Minecraft tools and various projects.",
+                "I'm a coding student interested in programming and web technologies. I enjoy building websites, Discord tools and various projects.",
 
             description2:
                 "I like starting from real-world problems, learning how things work and turning ideas into working projects."
