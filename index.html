@@ -5,40 +5,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Jimmy 的個人網站，分享我的專案、開發紀錄與技術文章。">
-
-    <title>Jimmy — 關於我</title>
+    <title>Jimmy</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- 導覽列 -->
-    <header class="site-header">
-        <nav class="navbar">
+    <!-- Navbar -->
+    <header class="navbar">
 
-            <a href="index.html" class="site-logo">
+        <div class="nav-container">
+
+            <a href="index.html" class="logo">
                 Jimmy
             </a>
 
-            <button class="menu-toggle" id="menuToggle" aria-label="開啟選單">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="menu-toggle" aria-label="Menu">
+                ☰
             </button>
 
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" data-page="index">關於我</a>
-                <a href="projects.html" data-page="projects">我的專案</a>
-                <a href="links.html" data-page="links">連結列表</a>
-                <a href="blog.html" data-page="blog">我的部落格</a>
-            </div>
+            <nav class="nav-menu">
 
-        </nav>
+                <a href="index.html"
+                   data-i18n="nav.about">
+                    關於我
+                </a>
+
+                <a href="projects.html"
+                   data-i18n="nav.projects">
+                    我的專案
+                </a>
+
+                <a href="links.html"
+                   data-i18n="nav.links">
+                    連結列表
+                </a>
+
+                <a href="blog.html"
+                   data-i18n="nav.blog">
+                    我的部落格
+                </a>
+
+                <div class="language-switcher">
+
+                    <button
+                        type="button"
+                        data-language="zh">
+                        中
+                    </button>
+
+                    <span>|</span>
+
+                    <button
+                        type="button"
+                        data-language="en">
+                        EN
+                    </button>
+
+                </div>
+
+            </nav>
+
+        </div>
+
     </header>
 
 
+    <!-- Main -->
     <main>
 
         <!-- Hero -->
@@ -46,27 +80,39 @@
 
             <div class="hero-content">
 
-                <p class="eyebrow">HELLO, I'M</p>
+                <p class="eyebrow"
+                   data-i18n="home.eyebrow">
+                    你好，我是
+                </p>
 
-                <h1>Jimmy</h1>
+                <h1>
+                    Jimmy
+                </h1>
 
-                <p class="hero-subtitle">
+                <p class="role"
+                   data-i18n="home.role">
                     Developer · BSc Student
                 </p>
 
-                <p class="hero-description">
-                    喜歡研究程式設計、Web 開發與 Discord 相關技術。
-                    這裡是我的個人空間，用來分享我的專案、開發紀錄與一些想法。
+                <p class="hero-description"
+                   data-i18n="home.description">
+                    喜歡研究程式設計、Web 開發與 Discord、node.js 相關技術。
                 </p>
 
-                <div class="hero-actions">
-                    <a href="projects.html" class="button button-primary">
-                        查看我的專案
+                <div class="hero-buttons">
+
+                    <a href="projects.html"
+                       class="button"
+                       data-i18n="home.projects">
+                        我的專案
                     </a>
 
-                    <a href="blog.html" class="button button-secondary">
+                    <a href="blog.html"
+                       class="button button-secondary"
+                       data-i18n="home.blog">
                         閱讀部落格
                     </a>
+
                 </div>
 
             </div>
@@ -77,26 +123,27 @@
         <!-- About -->
         <section class="section">
 
-            <div class="section-heading">
-                <p class="eyebrow">ABOUT ME</p>
-                <h2>關於我</h2>
+            <div class="section-header">
+
+                <p class="section-number">
+                    01
+                </p>
+
+                <h2 data-i18n="about.title">
+                    關於我
+                </h2>
+
             </div>
 
             <div class="about-content">
 
-                <p>
-                    你好，我是 Jimmy。
+                <p data-i18n="about.description">
+                    我是一名喜歡研究程式設計與網路技術的學生。
+                    平時會製作網站、Minecraft、Discord 相關工具與各種自己感興趣的專案。
                 </p>
 
-                <p>
-                    我目前正在學習程式設計，並透過各種個人專案
-                    實際探索 Web 開發、JavaScript、Minecraft、Discord
-                    以及伺服器（ubuntu）相關技術。
-                </p>
-
-                <p>
-                    我喜歡從零開始製作自己的工具與網站，
-                    也喜歡研究如何把不同的技術組合在一起。
+                <p data-i18n="about.description2">
+                    我喜歡從實際的問題出發，慢慢研究技術並將它實作出來。
                 </p>
 
             </div>
@@ -107,115 +154,109 @@
         <!-- Featured Projects -->
         <section class="section">
 
-            <div class="section-heading section-heading-with-link">
+            <div class="section-header">
 
-                <div>
-                    <p class="eyebrow">FEATURED PROJECTS</p>
-                    <h2>我的專案</h2>
-                </div>
+                <p class="section-number">
+                    02
+                </p>
 
-                <a href="projects.html" class="text-link">
-                    查看全部 →
-                </a>
+                <h2 data-i18n="home.featuredProjects">
+                    精選專案
+                </h2>
 
             </div>
 
 
             <div class="project-grid">
 
-                <a href="projects.html" class="project-card">
+                <!-- Project 1 -->
+                <a href="projects.html"
+                   class="project-card">
 
-                    <div class="card-number">
-                        01
-                    </div>
+                    <div>
 
-                    <div class="card-content">
-
-                        <h3>xhakyialk</h3>
-
-                        <p>
-                            一個以 Minecraft 社群與伺服器為核心的
-                            個人 Web 專案。
+                        <p class="card-label">
+                            PROJECT 01
                         </p>
 
-                        <span class="card-link">
-                            查看專案 →
-                        </span>
+                        <h3 data-i18n="projects.xhakyialk.title">
+                            xhakyialk
+                        </h3>
+
+                        <p data-i18n="projects.xhakyialk.description">
+                            Minecraft 社群網站與相關服務。
+                        </p>
 
                     </div>
+
+                    <span class="card-arrow">
+                        →
+                    </span>
 
                 </a>
 
 
-                <a href="projects.html" class="project-card">
+                <!-- Project 2 -->
+                <a href="projects.html"
+                   class="project-card">
 
-                    <div class="card-number">
-                        02
-                    </div>
+                    <div>
 
-                    <div class="card-content">
-
-                        <h3>BedrockBridge Plugins</h3>
-
-                        <p>
-                            Minecraft Bedrock Edition 的
-                            JavaScript Plugin 開發。
+                        <p class="card-label">
+                            PROJECT 02
                         </p>
 
-                        <span class="card-link">
-                            查看專案 →
-                        </span>
+                        <h3 data-i18n="projects.minecraftMap.title">
+                            Minecraft Web Map
+                        </h3>
+
+                        <p data-i18n="projects.minecraftMap.description">
+                            使用 uNmINeD 建立 Minecraft 世界地圖。
+                        </p>
 
                     </div>
+
+                    <span class="card-arrow">
+                        →
+                    </span>
 
                 </a>
 
 
-                <a href="projects.html" class="project-card">
+                <!-- Project 3 -->
+                <a href="projects.html"
+                   class="project-card">
 
-                    <div class="card-number">
-                        03
-                    </div>
+                    <div>
 
-                    <div class="card-content">
-
-                        <h3>Minecraft Map</h3>
-
-                        <p>
-                            使用 uNmINeD 建立 Minecraft
-                            世界地圖展示系統。
+                        <p class="card-label">
+                            PROJECT 03
                         </p>
 
-                        <span class="card-link">
-                            查看專案 →
-                        </span>
+                        <h3 data-i18n="projects.bridge.title">
+                            BedrockBridge Plugins
+                        </h3>
+
+                        <p data-i18n="projects.bridge.description">
+                            Minecraft Bedrock Edition 的自訂插件開發。
+                        </p>
 
                     </div>
+
+                    <span class="card-arrow">
+                        →
+                    </span>
 
                 </a>
 
+            </div>
 
-                <a href="projects.html" class="project-card">
 
-                    <div class="card-number">
-                        04
-                    </div>
+            <div class="section-more">
 
-                    <div class="card-content">
-
-                        <h3>Other Projects</h3>
-
-                        <p>
-                            其他正在研究、製作或實驗中的
-                            個人專案。
-                        </p>
-
-                        <span class="card-link">
-                            查看專案 →
-                        </span>
-
-                    </div>
-
+                <a href="projects.html"
+                   data-i18n="home.viewAll">
+                    查看全部 →
                 </a>
 
             </div>
@@ -226,26 +267,16 @@
 
 
     <!-- Footer -->
-    <footer class="site-footer">
+    <footer class="footer">
 
-        <div class="footer-inner">
-
-            <div>
-                <span class="footer-logo">Jimmy</span>
-            </div>
-
-            <div>
-                <p>
-                    © <span id="currentYear"></span> Jimmy.
-                    All rights reserved.
-                </p>
-            </div>
-
-        </div>
+        <p>
+            © <span id="current-year"></span> Jimmy
+        </p>
 
     </footer>
 
 
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
 
 </body>
