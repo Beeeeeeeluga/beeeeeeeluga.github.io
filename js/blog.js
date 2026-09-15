@@ -1,9 +1,9 @@
 // ==========================================================
 // Blog Loader
-// Markdown + GitHub Actions generated index
+// Markdown + Manual index.json
 // ==========================================================
 
-const BLOG_INDEX_URL = "blog/posts.json";
+const BLOG_INDEX_URL = "blog/index.json";
 
 
 // ==========================================================
@@ -102,7 +102,11 @@ async function getBlogPosts() {
     const posts = await response.json();
 
     if (!Array.isArray(posts)) {
-        throw new Error("Blog index format is invalid.");
+
+        throw new Error(
+            "Blog index format is invalid."
+        );
+
     }
 
     return posts;
@@ -146,53 +150,65 @@ function parseFrontMatter(markdown) {
         return result;
     }
 
-    const endIndex = markdown.indexOf("\n---", 3);
+    const endIndex =
+        markdown.indexOf("\n---", 3);
 
     if (endIndex === -1) {
         return result;
     }
 
-    const frontMatter = markdown
-        .substring(3, endIndex)
-        .trim();
+    const frontMatter =
+        markdown
+            .substring(3, endIndex)
+            .trim();
 
-    const content = markdown
-        .substring(endIndex + 4)
-        .trim();
+    const content =
+        markdown
+            .substring(endIndex + 4)
+            .trim();
+
 
     frontMatter
         .split("\n")
         .forEach(line => {
 
-            const separator = line.indexOf(":");
+            const separator =
+                line.indexOf(":");
 
             if (separator === -1) {
                 return;
             }
 
-            const key = line
-                .substring(0, separator)
-                .trim();
+            const key =
+                line
+                    .substring(0, separator)
+                    .trim();
 
-            let value = line
-                .substring(separator + 1)
-                .trim();
+            let value =
+                line
+                    .substring(separator + 1)
+                    .trim();
+
 
             if (
-                (value.startsWith('"') && value.endsWith('"')) ||
-                (value.startsWith("'") && value.endsWith("'"))
+                (value.startsWith('"') &&
+                    value.endsWith('"')) ||
+                (value.startsWith("'") &&
+                    value.endsWith("'"))
             ) {
 
-                value = value.substring(
-                    1,
-                    value.length - 1
-                );
+                value =
+                    value.substring(
+                        1,
+                        value.length - 1
+                    );
 
             }
 
             result.data[key] = value;
 
         });
+
 
     result.content = content;
 
@@ -210,7 +226,8 @@ function formatDate(dateString) {
         return "";
     }
 
-    const date = new Date(dateString);
+    const date =
+        new Date(dateString);
 
     if (Number.isNaN(date.getTime())) {
         return dateString;
@@ -260,11 +277,14 @@ function renderMarkdown(markdown) {
 async function loadBlogList() {
 
     const container =
-        document.getElementById("blog-container");
+        document.getElementById(
+            "blog-container"
+        );
 
     if (!container) {
         return;
     }
+
 
     container.innerHTML = `
         <div class="blog-loading">
@@ -272,17 +292,21 @@ async function loadBlogList() {
         </div>
     `;
 
+
     try {
 
-        const posts = await getBlogPosts();
+        const posts =
+            await getBlogPosts();
 
         const language =
             getBlogLanguage();
+
 
         if (posts.length === 0) {
 
             container.innerHTML = `
                 <div class="blog-empty">
+
                     <p>
                         ${
                             language === "en"
@@ -290,6 +314,7 @@ async function loadBlogList() {
                                 : "目前還沒有部落格文章。"
                         }
                     </p>
+
                 </div>
             `;
 
@@ -297,64 +322,69 @@ async function loadBlogList() {
         }
 
 
-        container.innerHTML = posts
-            .map(post => {
+        container.innerHTML =
+            posts
+                .map(post => {
 
-                const title =
-                    getLocalizedValue(
-                        post,
-                        language
-                    );
-
-                const description =
-                    getLocalizedDescription(
-                        post,
-                        language
-                    );
-
-                const date =
-                    formatDate(post.date);
+                    const title =
+                        getLocalizedValue(
+                            post,
+                            language
+                        );
 
 
-                return `
-                    <a
-                        class="blog-card"
-                        href="blog.html?post=${encodeURIComponent(post.filename)}"
-                    >
+                    const description =
+                        getLocalizedDescription(
+                            post,
+                            language
+                        );
 
-                        <div class="blog-card-content">
 
-                            ${
-                                date
-                                    ? `
-                                        <div class="blog-card-date">
-                                            ${escapeHtml(date)}
-                                        </div>
-                                      `
-                                    : ""
-                            }
+                    const date =
+                        formatDate(
+                            post.date
+                        );
 
-                            <h2>
-                                ${escapeHtml(title)}
-                            </h2>
 
-                            ${
-                                description
-                                    ? `
-                                        <p>
-                                            ${escapeHtml(description)}
-                                        </p>
-                                      `
-                                    : ""
-                            }
+                    return `
+                        <a
+                            class="blog-card"
+                            href="blog.html?post=${encodeURIComponent(post.filename)}"
+                        >
 
-                        </div>
+                            <div class="blog-card-content">
 
-                    </a>
-                `;
+                                ${
+                                    date
+                                        ? `
+                                            <div class="blog-card-date">
+                                                ${escapeHtml(date)}
+                                            </div>
+                                          `
+                                        : ""
+                                }
 
-            })
-            .join("");
+                                <h2>
+                                    ${escapeHtml(title)}
+                                </h2>
+
+                                ${
+                                    description
+                                        ? `
+                                            <p>
+                                                ${escapeHtml(description)}
+                                            </p>
+                                          `
+                                        : ""
+                                }
+
+                            </div>
+
+                        </a>
+                    `;
+
+                })
+                .join("");
 
 
     } catch (error) {
@@ -363,6 +393,7 @@ async function loadBlogList() {
             "[Blog] Unable to load blog:",
             error
         );
+
 
         container.innerHTML = `
             <div class="blog-error">
@@ -376,11 +407,14 @@ async function loadBlogList() {
                 </p>
 
                 <details>
+
                     <summary>
                         Technical details
                     </summary>
 
-                    <pre>${escapeHtml(error.message)}</pre>
+                    <pre>
+                        ${escapeHtml(error.message)}
+                    </pre>
 
                 </details>
 
@@ -398,11 +432,14 @@ async function loadBlogList() {
 async function loadBlogPost(filename) {
 
     const container =
-        document.getElementById("blog-container");
+        document.getElementById(
+            "blog-container"
+        );
 
     if (!container) {
         return;
     }
+
 
     container.innerHTML = `
         <div class="blog-loading">
@@ -410,32 +447,43 @@ async function loadBlogPost(filename) {
         </div>
     `;
 
+
     try {
 
         const markdown =
             await loadMarkdown(filename);
 
+
         const parsed =
-            parseFrontMatter(markdown);
+            parseFrontMatter(
+                markdown
+            );
+
 
         const language =
             getBlogLanguage();
 
 
-        let title =
-            language === "en"
-                ? (
-                    parsed.data.title_en ||
-                    parsed.data.title_zh ||
-                    parsed.data.title ||
-                    "Untitled"
-                )
-                : (
-                    parsed.data.title_zh ||
-                    parsed.data.title_en ||
-                    parsed.data.title ||
-                    "未命名文章"
-                );
+        let title;
+
+
+        if (language === "en") {
+
+            title =
+                parsed.data.title_en ||
+                parsed.data.title_zh ||
+                parsed.data.title ||
+                "Untitled";
+
+        } else {
+
+            title =
+                parsed.data.title_zh ||
+                parsed.data.title_en ||
+                parsed.data.title ||
+                "未命名文章";
+
+        }
 
 
         const date =
@@ -475,6 +523,7 @@ async function loadBlogPost(filename) {
 
                 </header>
 
+
                 <div class="blog-post-content">
                     ${html}
                 </div>
@@ -496,6 +545,7 @@ async function loadBlogPost(filename) {
             error
         );
 
+
         container.innerHTML = `
             <div class="blog-error">
 
@@ -508,11 +558,14 @@ async function loadBlogPost(filename) {
                 </p>
 
                 <details>
+
                     <summary>
                         Technical details
                     </summary>
 
-                    <pre>${escapeHtml(error.message)}</pre>
+                    <pre>
+                        ${escapeHtml(error.message)}
+                    </pre>
 
                 </details>
 
@@ -534,8 +587,10 @@ function reloadBlog() {
             window.location.search
         );
 
+
     const post =
         params.get("post");
+
 
     if (post) {
 
@@ -561,6 +616,7 @@ document.addEventListener(
             new URLSearchParams(
                 window.location.search
             );
+
 
         const post =
             params.get("post");
