@@ -1,0 +1,84 @@
+{
+    "projects": [
+        {
+            "id": "xhakyialk",
+
+            "featured": true,
+
+            "title": {
+                "zh": "xhakyialk",
+                "en": "xhakyialk"
+            },
+
+            "description": {
+                "zh": "Minecraft 社群網站與相關服務。",
+                "en": "A Minecraft community website and related services."
+            },
+
+            "longDescription": {
+                "zh": "Minecraft 社群網站，提供伺服器資訊、社群內容以及各種 Minecraft 相關服務。",
+                "en": "A Minecraft community website providing server information, community content and various Minecraft-related services."
+            },
+
+            "url": "https://xhakyialk.com/"
+        },
+
+        {
+            "id": "minecraft-map",
+
+            "featured": true,
+
+            "title": {
+                "zh": "Minecraft Web Map",
+                "en": "Minecraft Web Map"
+            },
+
+            "description": {
+                "zh": "使用 uNmINeD 建立 Minecraft 世界地圖。",
+                "en": "A Minecraft world map generated with uNmINeD."
+            },
+
+            "longDescription": {
+                "zh": "使用 uNmINeD 將 Minecraft 世界轉換成可以透過瀏覽器查看的互動式地圖。",
+                "en": "An interactive web map that converts Minecraft worlds into maps that can be viewed directly in a browser."
+            }
+        },
+
+        {
+            "id": "bedrockbridge",
+
+            "featured": true,
+
+            "title": {
+                "zh": "BedrockBridge Plugins",
+                "en": "BedrockBridge Plugins"
+            },
+
+            "description": {
+                "zh": "Minecraft Bedrock Edition 的自訂插件開發。",
+                "en": "Custom plugin development for Minecraft Bedrock Edition."
+            },
+
+            "longDescription": {
+                "zh": "為 Minecraft Bedrock Edition 開發的 JavaScript 插件。",
+                "en": "JavaScript plugins developed for Minecraft Bedrock Edition."
+            }
+        },
+
+        {
+            "id": "personal-website",
+
+            "featured": false,
+
+            "title": {
+                "zh": "Personal Website",
+                "en": "Personal Website"
+            },
+
+            "description": {
+                "zh": "使用 HTML、CSS 與 JavaScript 建立的個人網站。",
+                "en": "A personal website built with HTML, CSS and JavaScript."
+            }
+        }
+    ]
+}
