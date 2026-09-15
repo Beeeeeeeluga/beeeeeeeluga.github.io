@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title data-i18n="pages.blog">
+        我的部落格 · Jimmy
+    </title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="index.html" class="logo">
+            Jimmy
+        </a>
+
+        <button class="menu-toggle" aria-label="Menu">
+            ☰
+        </button>
+
+        <nav class="nav-menu">
+
+            <a href="index.html"
+               data-i18n="nav.about">
+                關於我
+            </a>
+
+            <a href="projects.html"
+               data-i18n="nav.projects">
+                我的專案
+            </a>
+
+            <a href="links.html"
+               data-i18n="nav.links">
+                連結列表
+            </a>
+
+            <a href="blog.html"
+               data-i18n="nav.blog">
+                我的部落格
+            </a>
+
+            <div class="language-switcher">
+
+                <button type="button"
+                        data-language="zh">
+                    中
+                </button>
+
+                <span>|</span>
+
+                <button type="button"
+                        data-language="en">
+                    EN
+                </button>
+
+            </div>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="page-header">
+
+        <p class="eyebrow">
+            BLOG
+        </p>
+
+        <h1 data-i18n="pages.blog">
+            我的部落格
+        </h1>
+
+        <p data-i18n="pages.blogDescription">
+            我的開發紀錄、技術筆記與一些想法。
+        </p>
+
+    </section>
+
+
+    <section class="section">
+
+        <div class="blog-list">
+
+
+            <a href="#"
+               class="blog-card">
+
+                <div class="blog-date">
+                    2026.09.15
+                </div>
+
+                <div class="blog-content">
+
+                    <h2 data-i18n="blog.post1.title">
+                        建立我的 GitHub Pages
+                    </h2>
+
+                    <p data-i18n="blog.post1.description">
+                        開始建立自己的個人網站，並研究 GitHub Pages 的使用方式。
+                    </p>
+
+                </div>
+
+                <span class="card-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <a href="#"
+               class="blog-card">
+
+                <div class="blog-date">
+                    2026.09.20
+                </div>
+
+                <div class="blog-content">
+
+                    <h2 data-i18n="blog.post2.title">
+                        我的 Minecraft 開發紀錄
+                    </h2>
+
+                    <p data-i18n="blog.post2.description">
+                        記錄 Minecraft 相關插件與工具的開發過程。
+                    </p>
+
+                </div>
+
+                <span class="card-arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <p>
+        © <span id="current-year"></span> Jimmy
+    </p>
+
+</footer>
+
+
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
