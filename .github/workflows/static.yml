@@ -59,6 +59,18 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Verify generated files
+        run: |
+          echo "===== BLOG FILES ====="
+          find blog -maxdepth 1 -type f -print
+      
+          echo "===== TEST HTML ====="
+          test -f blog/test.html
+          echo "blog/test.html exists!"
+      
+          echo "===== HTML HEAD ====="
+          head -40 blog/test.html
+
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
