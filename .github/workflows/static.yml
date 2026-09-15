@@ -53,6 +53,10 @@ jobs:
 
           posts = []
 
+          print("========================================")
+          print("Generating blog posts index")
+          print("========================================")
+
           if not os.path.isdir(BLOG_DIR):
               print("Blog directory does not exist.")
               os.makedirs(BLOG_DIR, exist_ok=True)
@@ -64,13 +68,20 @@ jobs:
 
               filepath = os.path.join(BLOG_DIR, filename)
 
-              with open(filepath, "r", encoding="utf-8") as f:
+              print(f"Reading: {filepath}")
+
+              with open(
+                  filepath,
+                  "r",
+                  encoding="utf-8"
+              ) as f:
+
                   content = f.read()
 
               metadata = {}
 
               # --------------------------------------------------
-              # Parse YAML-like front matter
+              # Parse front matter
               # --------------------------------------------------
 
               if content.startswith("---"):
@@ -100,17 +111,33 @@ jobs:
                               and value[0] == value[-1]
                               and value[0] in ['"', "'"]
                           ):
+
                               value = value[1:-1]
 
                           metadata[key] = value
 
               posts.append({
                   "filename": filename,
-                  "title_zh": metadata.get("title_zh", ""),
-                  "title_en": metadata.get("title_en", ""),
-                  "date": metadata.get("date", ""),
-                  "description_zh": metadata.get("description_zh", ""),
-                  "description_en": metadata.get("description_en", "")
+                  "title_zh": metadata.get(
+                      "title_zh",
+                      ""
+                  ),
+                  "title_en": metadata.get(
+                      "title_en",
+                      ""
+                  ),
+                  "date": metadata.get(
+                      "date",
+                      ""
+                  ),
+                  "description_zh": metadata.get(
+                      "description_zh",
+                      ""
+                  ),
+                  "description_en": metadata.get(
+                      "description_en",
+                      ""
+                  )
               })
 
 
@@ -119,13 +146,16 @@ jobs:
           # ------------------------------------------------------
 
           posts.sort(
-              key=lambda post: post.get("date", ""),
+              key=lambda post: post.get(
+                  "date",
+                  ""
+              ),
               reverse=True
           )
 
 
           # ------------------------------------------------------
-          # Write JSON
+          # Write posts.json
           # ------------------------------------------------------
 
           with open(
@@ -141,10 +171,36 @@ jobs:
                   indent=2
               )
 
-          print(f"Generated {OUTPUT_FILE}")
+
+          print("")
+          print("========================================")
+          print(f"Generated: {OUTPUT_FILE}")
           print(f"Found {len(posts)} Markdown posts.")
+          print("========================================")
 
           PY
+
+
+      # ==========================================================
+      # Verify Blog Index
+      # ==========================================================
+
+      - name: Verify blog posts index
+        run: |
+
+          echo "========================================"
+          echo "Blog directory"
+          echo "========================================"
+
+          ls -la blog
+
+
+          echo ""
+          echo "========================================"
+          echo "Generated posts.json"
+          echo "========================================"
+
+          cat blog/posts.json
 
 
       # ==========================================================
@@ -156,7 +212,7 @@ jobs:
 
 
       # ==========================================================
-      # Upload
+      # Upload artifact
       # ==========================================================
 
       - name: Upload artifact
@@ -166,7 +222,7 @@ jobs:
 
 
       # ==========================================================
-      # Deploy
+      # Deploy to GitHub Pages
       # ==========================================================
 
       - name: Deploy to GitHub Pages
