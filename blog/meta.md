@@ -226,6 +226,62 @@ BBC 有報導指出，自 2025 年 12 月開始，Meta 就已經關閉所有 ema
 1. **個人名義寄出**：約 30 美金，他們的網站會自動按照你的要求幫你用 USPS 寄信和生成信件。這個方法比較實惠，雖然 Meta 一定會看，但如果你是違反較嚴重的社群條款，可能也會被忽略。
 2. **律師簽名掛號信**：我選的是這個方案，費用為港幣 $2100（約 8000 台幣），請律師簽名和跟進個案。這種屬於 Meta 必看的法律信件，通常 99% Meta 都不會想要跟你打官司，而是在你信件要求（14 天）的期限內，悄悄解鎖你的帳號，不會給你任何解釋或 email 通知。
 
+我寫的掛號信給大家參考：請把名字和資料換成你的資料
+
+```
+August 20, 2026 FOR SETTLEMENT PURPOSES ONLY
+Ka Shing Lee
+304 S Jones Blvd.
+#4421
+Las Vegas, NV 89107
+
+Meta Platforms, Inc.
+1601 Willow Road
+Attn: Legal Mail
+Menlo Park, CA 94025
+Re: Demand for Reinstatement of Instagram, Facebook, and Threads Accounts
+
+Dear Meta Platforms, Inc.,
+The purpose of this letter is to demand the immediate review and reinstatement of Lee Ka Shing's accounts “@lkssir1234” and “@lkssir1235” on the Instagram platform, as well
+as the linked Facebook account and Threads accounts with the same usernames. Lee Ka Shing's
+accounts were recently suspended without any clear explanation or justifiable reason provided.
+To facilitate your review, Lee Ka Shing has prepared to comply with any formal procedures that
+you may undertake. Lee Ka Shing has included relevant information that is necessary for you to
+review their accounts:
+
+Email associated with account: leeleekashing@gmail.com
+Phone numbers associated with account: +852 2507 3364
+Residence: Hong Kong
+Name used in accounts: Golden Lee Ka Shing
+Full name on official identity card: Lee Ka Shing
+New email address not previously associated with any accounts:
+newmanbolks@gmail.com
+
+The following facts support this demand:
+1. On June 27, 2026, Lee Ka Shing's accounts were disabled by Meta for alleged
+violations of Instagram's policy on Child Sexual Exploitation, Abuse, and Nudity.
+2. Lee Ka Shing submitted an in-app appeal shortly after the suspension, but within 15
+minutes, Meta responded that the accounts were permanently disabled with no further
+appeals allowed.
+3. Lee Ka Shing asserts that the accounts contain no content violating Meta's policies and
+that the suspension is based on a false claim.
+4. Lee Ka Shing's accounts are critical for personal and professional communications,
+including contacting professors, clients, and running a business.
+5. The accounts have been active for 5-6 years and contain significant personal memories.
+Lee Ka Shing is requesting that their accounts be reinstated no later than 14 days after this
+letter's postage date. If you fail to comply with this demand, then Lee Ka Shing intends to file a
+lawsuit in court for wrongful termination of the accounts to hold you responsible for damages
+caused, plus attorney's fees, associated costs, and expenses.
+Nothing in this letter constitutes a waiver of Lee Ka Shing's rights to pursue any remedies,
+including filing a lawsuit against Meta Platforms, Inc.
+For any questions or additional information, you may contact Lee Ka Shing via email at
+leeleekashing@gmail.com.
+Sincerely,
+Lee Ka Shing <--這裡是你的簽名
+Ka Shing Lee
+
+```
+
 我個人是到這一步就解鎖了。但律師說過，如果後續 Meta 繼續忽略，就可以打美國的小額錢債庭，最多可以追回 8000 美金。我不需要飛美國上庭，律師會直接幫我打。而這種情況下 Meta 通常不會派律師打超小額度的官司，所以在此之前一定會直接解鎖你的帳號，讓你無從提告。到這步你就基本拿 Meta 沒辦法了。不過如果你是公司帳號，在這期間因為被鎖導致的損失，可以繼續提告。
 
 ## 心得與建議
@@ -240,5 +296,7 @@ BBC 有報導指出，自 2025 年 12 月開始，Meta 就已經關閉所有 ema
 6. **地區限制是關鍵。** 歐盟 GDPR 只適用於歐洲人，美國 AG 申訴則需要美國護照和電話。非歐洲人、非美國人的帳號，最終還是得回到美國 Meta 總部處理。
 
 希望這篇文章能幫助到同樣遭遇帳號被永久停權的人。如果你正在經歷這件事，祝你早日拿回帳號。
+
+
 
 
