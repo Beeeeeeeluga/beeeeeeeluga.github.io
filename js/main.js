@@ -23,6 +23,7 @@ function escapeHtml(text) {
     div.textContent = text;
 
     return div.innerHTML;
+
 }
 
 
@@ -441,115 +442,9 @@ async function loadLinks() {
 
 /*
 ==========================================================
-Blog Card
-==========================================================
-*/
-
-function createBlogCard(post) {
-
-    const title =
-        localized(post.title);
-
-    const description =
-        localized(post.description);
-
-
-    return `
-        <a
-            href="${escapeHtml(post.url || "#")}"
-            class="blog-card"
-        >
-
-            <div class="blog-date">
-                ${escapeHtml(post.date || "")}
-            </div>
-
-            <div class="blog-content">
-
-                <h2>
-                    ${escapeHtml(title)}
-                </h2>
-
-                <p>
-                    ${escapeHtml(description)}
-                </p>
-
-            </div>
-
-            <span class="card-arrow">
-                →
-            </span>
-
-        </a>
-    `;
-
-}
-
-
-/*
-==========================================================
-載入 Blog
-==========================================================
-*/
-
-async function loadBlog() {
-
-    const container =
-        document.getElementById(
-            "blog-container"
-        );
-
-
-    if (!container) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const data =
-            await loadJSON(
-                "blog.json"
-            );
-
-
-        /*
-        最新文章在前
-        */
-
-        const posts =
-            [...data.posts]
-                .sort(
-                    (a, b) =>
-                        new Date(b.date) -
-                        new Date(a.date)
-                );
-
-
-        container.innerHTML =
-            posts
-                .map(
-                    createBlogCard
-                )
-                .join("");
-
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-    }
-
-}
-
-
-/*
-==========================================================
 語言切換後重新載入動態內容
+
+Blog 已由 blog.js 獨立處理
 ==========================================================
 */
 
@@ -560,8 +455,6 @@ function reloadDynamicContent() {
     loadAllProjects();
 
     loadLinks();
-
-    loadBlog();
 
 }
 
@@ -578,6 +471,7 @@ function setupMobileMenu() {
         document.querySelector(
             ".menu-toggle"
         );
+
 
     const navMenu =
         document.querySelector(
@@ -700,7 +594,7 @@ function setupYear() {
 Language change observer
 
 i18n.js 更新 localStorage 後，
-這裡重新生成 Projects / Links / Blog
+這裡重新生成 Projects / Links
 ==========================================================
 */
 
